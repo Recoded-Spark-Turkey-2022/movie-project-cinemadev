@@ -24,10 +24,38 @@ const movieDetails = async (movie) => {
   const movieActors = await fetchActor(movie.id);
   const movieRelated = await fetchRelated(movie.id);
 
-  renderMovie(movieRes);
-  renderActors(movieActors);
-  renderRelated(movieRelated);
+  rendersection(movieRes, movieActors, movieRelated);
 };
+const rendersection = (movieRes, movieActors, moviveRelated) => {
+  const rs = renderActors(movieActors)
+  
+  console.log(rs)
+  CONTAINER.innerHTML = `
+  <div class="row">
+      <div class="col-md-4">
+        <img id="movie-backdrop" src="${
+          BACKDROP_BASE_URL + movieRes.backdrop_path
+        }">
+      </div>
+      <div class="col-md-8">
+          <h2 id="movie-title">${movieRes.title}</h2>
+          <p id="movie-release-date"><b>Release Date:</b> ${
+            movieRes.release_date
+          }</p>
+          <p id="movie-runtime"><b>Runtime:</b> ${movieRes.runtime} Minutes</p>
+          <p> <b> Movie Language: </b> ${movieRes.original_language} </p>
+          <h3>Overview:</h3>
+          <p id="movie-overview">${movieRes.overview}</p>
+      
+      <h3>Actors:</h3>
+      <ul id="actors" class="list-unstyled">
+      ${rs}
+      </ul>
+      </div>
+      </div>
+  </div>`;
+};
+// renderRelated(moviveRelated);
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
@@ -100,13 +128,15 @@ const renderMovie = (movie) => {
             </ul>
     </div>`;
 };
-
+ 
 const renderActors = (actor) => {
+  let st="" ;
   actor.cast.slice(0, 5).map((act) => {
-    CONTAINER.innerHTML += `
+    st += `
     <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
     `;
   });
+  return st
 };
 
 const renderRelated = (movies) => {
