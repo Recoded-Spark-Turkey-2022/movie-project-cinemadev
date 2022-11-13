@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
@@ -21,7 +21,9 @@ const constructUrl = (path) => {
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
+  const movieActors = await fetchActor(movie.id);
   renderMovie(movieRes);
+  renderActors(movieActors);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -38,15 +40,24 @@ const fetchMovie = async (movieId) => {
   return res.json();
 };
 
+const fetchActor = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/credits`);
+  const res = await fetch(url);
+  return res.json();
+};
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.innerHTML = `
-        <img src="${BACKDROP_BASE_URL + movie.backdrop_path}" alt="${
+    
+        <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
-        <h3>${movie.title}</h3>`;
+    <h3>${movie.title}</h3>
+    <h5>Rating:</h5> <span>&#x2606; ${movie.vote_average}/10</span>
+        `;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -59,9 +70,9 @@ const renderMovie = (movie) => {
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
-             <img id="movie-backdrop" src=${
-               BACKDROP_BASE_URL + movie.backdrop_path
-             }>
+          <img id="movie-backdrop" src="${
+            BACKDROP_BASE_URL + movie.backdrop_path
+          }">
         </div>
         <div class="col-md-8">
             <h2 id="movie-title">${movie.title}</h2>
@@ -74,8 +85,28 @@ const renderMovie = (movie) => {
         </div>
         </div>
             <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled"></ul>
+            <ul id="actors" class="list-unstyled">
+            </ul>
     </div>`;
 };
 
+const renderActors = (actor) => {
+  actor.cast.slice(0, 5).map((act) => {
+    CONTAINER.innerHTML += `
+    <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
+    `;
+  });
+};
+
 document.addEventListener("DOMContentLoaded", autorun);
+
+// function init() {
+//   fetch(
+//     "https://api.themoviedb.org/3/movie/top_rated?api_key=542003918769df50083a13c415bbc602"
+//   )
+//     .then((res) => res.json())
+//     .then((data) => {
+//       console.log(data);
+//     });
+// }
+// document.addEventListener("DOMContentLoaded", init);
