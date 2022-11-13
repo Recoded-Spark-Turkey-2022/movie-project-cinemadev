@@ -80,6 +80,7 @@ const renderMovie = (movie) => {
               movie.release_date
             }</p>
             <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
+            <p> <b> Movie Language: </b> ${movie.original_language} </p>
             <h3>Overview:</h3>
             <p id="movie-overview">${movie.overview}</p>
         </div>
