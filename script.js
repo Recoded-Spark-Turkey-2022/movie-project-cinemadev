@@ -22,8 +22,11 @@ const constructUrl = (path) => {
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
   const movieActors = await fetchActor(movie.id);
+  const movieRelated = await fetchRelated(movie.id);
+
   renderMovie(movieRes);
   renderActors(movieActors);
+  renderRelated(movieRelated);
 };
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
@@ -42,6 +45,12 @@ const fetchMovie = async (movieId) => {
 
 const fetchActor = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/credits`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const fetchRelated = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/similar`);
   const res = await fetch(url);
   return res.json();
 };
@@ -87,6 +96,7 @@ const renderMovie = (movie) => {
         </div>
             <h3>Actors:</h3>
             <ul id="actors" class="list-unstyled">
+            
             </ul>
     </div>`;
 };
@@ -96,6 +106,13 @@ const renderActors = (actor) => {
     CONTAINER.innerHTML += `
     <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
     `;
+  });
+};
+
+const renderRelated = (movies) => {
+  // CONTAINER.innerHTML = `<h3> Similar Movies:</h3>`;
+  movies.results.slice(0, 5).map((similar) => {
+    CONTAINER.innerHTML += `<li> ${similar.original_title} </li>`;
   });
 };
 
