@@ -24,36 +24,7 @@ const movieDetails = async (movie) => {
   const movieActors = await fetchActor(movie.id);
   const movieRelated = await fetchRelated(movie.id);
 
-  rendersection(movieRes, movieActors, movieRelated);
-};
-const rendersection = (movieRes, movieActors, moviveRelated) => {
-  const rs = renderActors(movieActors)
-  
-  console.log(rs)
-  CONTAINER.innerHTML = `
-  <div class="row">
-      <div class="col-md-4">
-        <img id="movie-backdrop" src="${
-          BACKDROP_BASE_URL + movieRes.backdrop_path
-        }">
-      </div>
-      <div class="col-md-8">
-          <h2 id="movie-title">${movieRes.title}</h2>
-          <p id="movie-release-date"><b>Release Date:</b> ${
-            movieRes.release_date
-          }</p>
-          <p id="movie-runtime"><b>Runtime:</b> ${movieRes.runtime} Minutes</p>
-          <p> <b> Movie Language: </b> ${movieRes.original_language} </p>
-          <h3>Overview:</h3>
-          <p id="movie-overview">${movieRes.overview}</p>
-      
-      <h3>Actors:</h3>
-      <ul id="actors" class="list-unstyled">
-      ${rs}
-      </ul>
-      </div>
-      </div>
-  </div>`;
+  renderMovie(movieRes, movieActors, movieRelated);
 };
 // renderRelated(moviveRelated);
 
@@ -102,59 +73,60 @@ const renderMovies = (movies) => {
   });
 };
 
+const renderActors = (actor) => {
+  let container = "";
+  actor.cast.slice(0, 5).map((act) => {
+    container += `
+    <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
+    `;
+  });
+  return container;
+};
+
+const renderRelated = (movies) => {
+  let container = "";
+  movies.results.slice(0, 5).map((similar) => {
+    container += `<li> ${similar.original_title} </li>`;
+  })
+  return container;
+};
+
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movie) => {
+const renderMovie = (movieRes, movieActors, movieRelated) => {
+  const actors = renderActors(movieActors);
+  const similar = renderRelated(movieRelated);
+
+  console.log(similar);
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
           <img id="movie-backdrop" src="${
-            BACKDROP_BASE_URL + movie.backdrop_path
+            BACKDROP_BASE_URL + movieRes.backdrop_path
           }">
         </div>
         <div class="col-md-8">
-            <h2 id="movie-title">${movie.title}</h2>
+            <h2 id="movie-title">${movieRes.title}</h2>
             <p id="movie-release-date"><b>Release Date:</b> ${
-              movie.release_date
+              movieRes.release_date
             }</p>
-            <p id="movie-runtime"><b>Runtime:</b> ${movie.runtime} Minutes</p>
-            <p> <b> Movie Language: </b> ${movie.original_language} </p>
+            <p id="movie-runtime"><b>Runtime:</b> ${
+              movieRes.runtime
+            } Minutes</p>
+            <p> <b> Movie Language: </b> ${movieRes.original_language} </p>
             <h3>Overview:</h3>
-            <p id="movie-overview">${movie.overview}</p>
+            <p id="movie-overview">${movieRes.overview}</p>
+        
+        <h3>Actors:</h3>
+        <ul id="actors" class="list-unstyled">
+        ${actors}
+        </ul>
+        <h3>Related Movies:</h3>
+        <ul id="actors" class="list-unstyled">
+        ${similar}
+        </ul>
         </div>
         </div>
-            <h3>Actors:</h3>
-            <ul id="actors" class="list-unstyled">
-            
-            </ul>
     </div>`;
-};
- 
-const renderActors = (actor) => {
-  let st="" ;
-  actor.cast.slice(0, 5).map((act) => {
-    st += `
-    <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
-    `;
-  });
-  return st
-};
-
-const renderRelated = (movies) => {
-  // CONTAINER.innerHTML = `<h3> Similar Movies:</h3>`;
-  movies.results.slice(0, 5).map((similar) => {
-    CONTAINER.innerHTML += `<li> ${similar.original_title} </li>`;
-  });
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
-
-// function init() {
-//   fetch(
-//     "https://api.themoviedb.org/3/movie/top_rated?api_key=542003918769df50083a13c415bbc602"
-//   )
-//     .then((res) => res.json())
-//     .then((data) => {
-//       console.log(data);
-//     });
-// }
-// document.addEventListener("DOMContentLoaded", init);
