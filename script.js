@@ -107,11 +107,24 @@ const renderTrailer = (movies) => {
   return container;
 };
 
+const renderComp = (movies) => {
+  let container = "";
+  movies.production_companies.map((company) => {
+    console.log(company.logo_path);
+    container = `<h5>${company.name}</h5> <img id="movie-backdrop" src="${
+      BACKDROP_BASE_URL + company.logo_path
+    }">`;
+  });
+  console.log(container);
+  return container;
+};
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
   const actors = renderActors(movieActors);
   const similar = renderRelated(movieRelated);
   const trailer = renderTrailer(movieTrailer);
+  const productionComp = renderComp(movieRes);
 
   CONTAINER.innerHTML = `
     <div class="row">
@@ -144,6 +157,10 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         <h2> Trailer: </h2>
         ${trailer}
         </div>
+        <h3>Production Companies:</h3>
+        <ul id="actors" class="list-unstyled">
+        ${productionComp}
+        </ul>
         </div>
         </div>
     </div>`;
