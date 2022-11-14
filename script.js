@@ -23,10 +23,10 @@ const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
   const movieActors = await fetchActor(movie.id);
   const movieRelated = await fetchRelated(movie.id);
+  const movieTrailer = await fetchTrailer(movie.id);
 
-  renderMovie(movieRes, movieActors, movieRelated);
+  renderMovie(movieRes, movieActors, movieRelated, movieTrailer);
 };
-// renderRelated(moviveRelated);
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
@@ -50,6 +50,12 @@ const fetchActor = async (movieId) => {
 
 const fetchRelated = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/similar`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const fetchTrailer = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/videos`);
   const res = await fetch(url);
   return res.json();
 };
@@ -87,16 +93,26 @@ const renderRelated = (movies) => {
   let container = "";
   movies.results.slice(0, 5).map((similar) => {
     container += `<li> ${similar.original_title} </li>`;
-  })
+  });
+  return container;
+};
+
+const renderTrailer = (movies) => {
+  let container = "";
+  movies.results.map((trailer) => {
+    container = `<iframe width="420" height="315"
+    src="https://www.youtube.com/embed/${trailer.key}">
+    </iframe>`;
+  });
   return container;
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovie = (movieRes, movieActors, movieRelated) => {
+const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
   const actors = renderActors(movieActors);
   const similar = renderRelated(movieRelated);
+  const trailer = renderTrailer(movieTrailer);
 
-  console.log(similar);
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
@@ -124,6 +140,10 @@ const renderMovie = (movieRes, movieActors, movieRelated) => {
         <ul id="actors" class="list-unstyled">
         ${similar}
         </ul>
+        <div>
+        <h2> Trailer: </h2>
+        ${trailer}
+        </div>
         </div>
         </div>
     </div>`;
