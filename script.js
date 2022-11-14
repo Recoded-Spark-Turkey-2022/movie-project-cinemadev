@@ -110,12 +110,20 @@ const renderTrailer = (movies) => {
 const renderComp = (movies) => {
   let container = "";
   movies.production_companies.map((company) => {
-    console.log(company.logo_path);
     container = `<h5>${company.name}</h5> <img id="movie-backdrop" src="${
       BACKDROP_BASE_URL + company.logo_path
     }">`;
   });
-  console.log(container);
+  return container;
+};
+
+const renderDirector = (movies) => {
+  let container = "";
+  movies.crew.map((director) => {
+    if (director.job === "Director") {
+      container = `<p>${director.name}</p>`
+    }
+  });
   return container;
 };
 
@@ -125,6 +133,7 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
   const similar = renderRelated(movieRelated);
   const trailer = renderTrailer(movieTrailer);
   const productionComp = renderComp(movieRes);
+  const direcotrName = renderDirector(movieActors);
 
   CONTAINER.innerHTML = `
     <div class="row">
@@ -158,12 +167,16 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         ${trailer}
         </div>
         <h3>Production Companies:</h3>
-        <ul id="actors" class="list-unstyled">
+        <ul id="prod" class="list-unstyled">
         ${productionComp}
+        </ul>
+        <h3>Director Name:</h3>
+        <ul id="dir" class="list-unstyled">
+        ${direcotrName}
         </ul>
         </div>
         </div>
-    </div>`;
+    </div>`
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
