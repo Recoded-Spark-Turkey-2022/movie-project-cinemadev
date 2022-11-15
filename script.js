@@ -52,10 +52,18 @@ const renderMovies = (movies) => {
     });
     CONTAINER.appendChild(movieDiv);
   });
+  //search function
+  let sInput = document.getElementById("search-input");
+  let sButton = document.getElementById("search-button");
+  sButton.addEventListener('click', function(event){
+    event.preventDefault();
+    let sItem = sInput.value;
+  })
 };
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movie) => {
+
   CONTAINER.innerHTML = `
     <div class="row">
         <div class="col-md-4">
