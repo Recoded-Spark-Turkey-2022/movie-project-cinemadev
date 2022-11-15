@@ -28,12 +28,6 @@ const movieDetails = async (movie) => {
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer);
 };
 
-const actorDetails = async (actor) => {
-  const movieActors = await fetchActor(actor.id);
-
-  renderActor(movieActors);
-};
-
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
@@ -54,13 +48,11 @@ const fetchActor = async (movieId) => {
   return res.json();
 };
 
-const fetchActorByID = async (actorId, actorName) => {
-  const actors = await fetchActor(actorId);
-  console.log(JSON.stringify(actors.cast));
+const fetchActorByID = async (movieId,actorId) => {
+  const actors = await fetchActor(movieId);
   actors.cast.map((actor) => {
-    if (actorName === actor.name) {
-      console.log(actor.name);
-      // console.log(actor);
+    if (actorId == actor.id) {
+      console.log("inside if");
       CONTAINER.innerHTML = `
       <div>
     <h6>${JSON.stringify(actor.name)}</h6>
@@ -125,7 +117,7 @@ const renderActors = (actors) => {
   let container = "";
   actors.cast.slice(0, 5).map((actor) => {
     container += `
-    <li><a class=${actor.name} href="#">${JSON.stringify(
+    <li><a id=${actor.id} href="#">${JSON.stringify(
       actor.name
     )}</a> as ${JSON.stringify(actor.character)}</li>
     
@@ -196,10 +188,8 @@ const renderActor = (actorID) => {
   const actors = document.querySelectorAll("a");
   for (let i = 0; i < actors.length; i++) {
     actors[i].addEventListener("click", () => {
-      // console.log(actors[i]);
-      fetchActorByID(actorID);
-      // console.log(actor);
-      // actorDetails(actor);
+      fetchActorByID(actorID,actors[i].id);
+
     });
   }
 };
@@ -255,7 +245,7 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         </div>
         </div>
     </div>`;
-  renderActor(movieActors.id, movieActors.name);
+  renderActor(movieActors.id);
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
