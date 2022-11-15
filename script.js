@@ -28,6 +28,12 @@ const movieDetails = async (movie) => {
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer);
 };
 
+// const actorDetails = async (actor) => {
+//   const movieActors = await fetchActor(actor.id);
+
+//   renderActor(movieActors);
+// };
+
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
   const url = constructUrl(`movie/now_playing`);
@@ -65,7 +71,6 @@ const renderMovies = (movies) => {
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
     movieDiv.innerHTML = `
-    
         <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
       movie.title
     } poster">
@@ -79,12 +84,19 @@ const renderMovies = (movies) => {
   });
 };
 
-const renderActors = (actor) => {
+const renderActors = (actors) => {
   let container = "";
-  actor.cast.slice(0, 5).map((act) => {
+  actors.cast.slice(0, 5).map((actor) => {
+    // const actorName = document.createElement("div");
     container += `
-    <li>${JSON.stringify(act.name)} as ${JSON.stringify(act.character)}</li>
+    <li><a class=${actor.name} href="#">${JSON.stringify(
+      actor.name
+    )}</a> as ${JSON.stringify(actor.character)}</li>
     `;
+    // const actorID = document.getElementsByClassName(`.${actor.name}`);
+    // const naji = [...actorID];
+    // actorID = document.querySelectorAll("a");
+    // console.log(actorID);
   });
   return container;
 };
@@ -121,11 +133,40 @@ const renderDirector = (movies) => {
   let container = "";
   movies.crew.map((director) => {
     if (director.job === "Director") {
-      container = `<p>${director.name}</p>`
+      container = `<p>${director.name}</p>`;
     }
   });
   return container;
 };
+
+// const renderRating = (movies) => {
+//   let container = "";
+//   movies.crew.map((director) => {
+//     if (director.job === "Director") {
+//       container = `<p>${director.name}</p>`
+//     }
+//   });
+//   return container;
+// };
+
+// const renderActor = (actor) => {
+//   CONTAINER.innerHTML = `
+//   <div class="row">
+
+//       <h2 id="movie-title">${actor.name}</h2>
+
+// </div>
+//   `;
+// };
+
+const naji = () => {
+  const actorID = document.querySelectorAll("a");
+  for (let i = 0; i < actorID.length; i++) {
+    actorID[i].addEventListener("click", () => {
+      console.log("clicked");
+    });
+  }
+}
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
@@ -133,7 +174,8 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
   const similar = renderRelated(movieRelated);
   const trailer = renderTrailer(movieTrailer);
   const productionComp = renderComp(movieRes);
-  const direcotrName = renderDirector(movieActors);
+  const directorName = renderDirector(movieActors);
+  // const rating = renderDirector(movieRating);
 
   CONTAINER.innerHTML = `
     <div class="row">
@@ -172,11 +214,12 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         </ul>
         <h3>Director Name:</h3>
         <ul id="dir" class="list-unstyled">
-        ${direcotrName}
+        ${directorName}
         </ul>
         </div>
         </div>
-    </div>`
+    </div>`;
+  naji();
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
