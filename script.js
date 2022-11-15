@@ -111,12 +111,16 @@ const renderMovies = (movies) => {
     });
     CONTAINER.appendChild(movieDiv);
   });
-  //search function
+//search function begins
+  //grabbing the word
   let sInput = document.getElementById("search-input");
   let sButton = document.getElementById("search-button");
   sButton.addEventListener('click', function(event){
     event.preventDefault();
     let sItem = sInput.value;
+    console.log(sItem)
+  //finding the movies
+    console.log(fetchMovies(sItem));
   })
 };
 
