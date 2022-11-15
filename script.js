@@ -28,11 +28,11 @@ const movieDetails = async (movie) => {
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer);
 };
 
-// const actorDetails = async (actor) => {
-//   const movieActors = await fetchActor(actor.id);
+const actorDetails = async (actor) => {
+  const movieActors = await fetchActor(actor.id);
 
-//   renderActor(movieActors);
-// };
+  renderActor(movieActors);
+};
 
 // This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
 const fetchMovies = async () => {
@@ -52,6 +52,43 @@ const fetchActor = async (movieId) => {
   const url = constructUrl(`movie/${movieId}/credits`);
   const res = await fetch(url);
   return res.json();
+};
+
+const fetchActorByID = async (actorId, actorName) => {
+  const actors = await fetchActor(actorId);
+  console.log(JSON.stringify(actors.cast));
+  actors.cast.map((actor) => {
+    if (actorName === actor.name) {
+      console.log(actor.name);
+      // console.log(actor);
+      CONTAINER.innerHTML = `
+      <div>
+    <h6>${JSON.stringify(actor.name)}</h6>
+    </div>  
+    <div>
+    <img src="${BACKDROP_BASE_URL + actor.profile_path}" />
+    </div>
+    <div>
+    <h4>Popularity:</h4>
+    <p>${actor.popularity}</p>
+    </div>
+    `;
+      if (actor.gender === "1") {
+        CONTAINER.innerHTML += `
+    <div>
+      <p> Female </p>
+    </div>
+      `;
+      } else {
+        CONTAINER.innerHTML += `
+    <div>
+      <p> Male </p>
+    </div>
+      `;
+      }
+    }
+  });
+  // }
 };
 
 const fetchRelated = async (movieId) => {
@@ -87,16 +124,12 @@ const renderMovies = (movies) => {
 const renderActors = (actors) => {
   let container = "";
   actors.cast.slice(0, 5).map((actor) => {
-    // const actorName = document.createElement("div");
     container += `
     <li><a class=${actor.name} href="#">${JSON.stringify(
       actor.name
     )}</a> as ${JSON.stringify(actor.character)}</li>
+    
     `;
-    // const actorID = document.getElementsByClassName(`.${actor.name}`);
-    // const naji = [...actorID];
-    // actorID = document.querySelectorAll("a");
-    // console.log(actorID);
   });
   return container;
 };
@@ -159,14 +192,17 @@ const renderDirector = (movies) => {
 //   `;
 // };
 
-const naji = () => {
-  const actorID = document.querySelectorAll("a");
-  for (let i = 0; i < actorID.length; i++) {
-    actorID[i].addEventListener("click", () => {
-      console.log("clicked");
+const renderActor = (actorID) => {
+  const actors = document.querySelectorAll("a");
+  for (let i = 0; i < actors.length; i++) {
+    actors[i].addEventListener("click", () => {
+      // console.log(actors[i]);
+      fetchActorByID(actorID);
+      // console.log(actor);
+      // actorDetails(actor);
     });
   }
-}
+};
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
@@ -219,7 +255,7 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         </div>
         </div>
     </div>`;
-  naji();
+  renderActor(movieActors.id, movieActors.name);
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
