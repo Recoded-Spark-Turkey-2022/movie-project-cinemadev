@@ -3,28 +3,66 @@
   font-size: 0.5;
 }
 
+/* body {
+  background: url(images/films.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
+
 h2 {
   font-size: 1.5rem;
   color: #eb6440;
 }
 
 #movie-backdrop {
-  width: 100%;
+  max-width: 20%;
 }
 
 .container {
+  background: url(images/films.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
   padding: 0px;
-  margin: 0px;
-  display: inline-block;
-  flex-direction: row;
-  align-content: space-between;
-  /* align-items: center; */
-  /* justify-content: center; */
+  resize: both; 
+  display: grid;
+  overflow: auto;
+  padding: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+
+}
+
+
+.items {
+  grid-column:1/-1; /* take all the columns */
+  background: green;
+  display: grid; /* you can use "inherit" here */
+  grid-template-columns: repeat(auto-fit, 50px); /* you can use "inherit" here */
+  column-gap: 10px; /* you can use "inherit" here */
+  row-gap: 10px;
+}
+.item {
+  height: 50px;
+  width: 50px;
+  background: blue;
 }
 
 .container div {
   font-size: 20px;
-  margin: 20px;
+  margin: 10px;
+  border-radius: 1rem;
+}
+
+.container h5 {
+  font-size: 25px;
+  text-align: center;
+  color:red;
+}
+
+.card {
+  width: auto;
 }
 
 #actors {
@@ -44,4 +82,3 @@ h2 {
   box-shadow: 0px 8px 16px 0px rgba(8, 103, 210, 0.2);
   z-index: 1;
 } */
-
