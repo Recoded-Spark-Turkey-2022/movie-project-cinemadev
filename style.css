@@ -1,16 +1,47 @@
+* {
+  box-sizing: border-box;
+  font-size: 0.5;
+}
+
 h2 {
-    font-size: 1.5rem;
-    color: #EB6440;
+  font-size: 1.5rem;
+  color: #eb6440;
 }
 
 #movie-backdrop {
-    width: 100%;
+  width: 100%;
 }
 
 .container {
-    padding-top: 0px;
+  padding: 0px;
+  margin: 0px;
+  display: inline-block;
+  flex-direction: row;
+  align-content: space-between;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.container div {
+  font-size: 20px;
+  margin: 20px;
 }
 
 #actors {
-    margin: 24px 16px 0 0;
+  margin: 24px 16px 0 0;
 }
+
+/* #genre-list-item {
+  position: relative;
+  display: inline-block;
+}
+
+#navbarDropdownMenuLink {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(8, 103, 210, 0.2);
+  z-index: 1;
+} */
+

@@ -1,32 +1,64 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/e9fa753156.js" crossorigin="anonymous"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/e9fa753156.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Movie</title>
-</head>
+  </head>
 
-<body>
-  <div class="container">
+  <body>
     <nav class="navbar navbar-expand-lg navbar-light" id="navigation-bar">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <h2><i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV</h2>
+        <h2>
+          <i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV
+        </h2>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item" id="home-page-list-item">
-            <a class="nav-link" href="#" id="home-page">Home<span class="sr-only">(current)</span></a>
+            <a
+              class="nav-link"
+              href="#"
+              id="home-page"
+              onclick="console.log('click')"
+              >Home<span class="sr-only">(current)</span></a
+            >
           </li>
           <li class="nav-item" id="actors-page-list-item">
-            <a class="nav-link" href="#" id="actors-page">Actors<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#" id="actors-page"
+              >Actors<span class="sr-only">(current)</span></a
+            >
           </li>
           <li class="nav-item dropdown" id="genre-list-item">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Genres</a>
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Genres</a
+            >
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
@@ -34,9 +66,26 @@
             </div>
           </li>
           <li class="nav-item dropdown" id="filter-list-item">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
-            </svg></a>
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              >Filter
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="10"
+                fill="currentColor"
+                class="bi bi-funnel-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"
+                /></svg
+            ></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
@@ -45,13 +94,24 @@
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" id="search-input" placeholder="" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" id="search-button" type="submit">Search</button>
+          <input
+            class="form-control mr-sm-2"
+            type="search"
+            id="search-input"
+            placeholder=""
+            aria-label="Search"
+          />
+          <button
+            class="btn btn-outline-success my-2 my-sm-0"
+            id="search-button"
+            type="submit"
+          >
+            Search
+          </button>
         </form>
       </div>
     </nav>
-  </div>
-  <script type="text/javascript" src="script.js"></script>
-</body>
-
+    <div class="container"></div>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
 </html>

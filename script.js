@@ -48,7 +48,7 @@ const fetchActor = async (movieId) => {
   return res.json();
 };
 
-const fetchActorByID = async (movieId,actorId) => {
+const fetchActorByID = async (movieId, actorId) => {
   const actors = await fetchActor(movieId);
   actors.cast.map((actor) => {
     if (actorId == actor.id) {
@@ -95,17 +95,85 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   movies.map((movie) => {
+    const movieStyle = `
+      <div class="card-deck">
+        <div class="card">
+          <img
+            class="card-img-top"
+            src="${
+      PROFILE_BASE_URL + movie.backdrop_path
+    }"
+            alt="${movie.title}"
+          />
+          <div class="card-body">
+            <h5 class="card-title">${movie.title}</h5>
+            <p class="card-text">This is a wider carde bit longer.</p>
+          </div>
+          <div class="card-footer">
+            <h4>Rating:</h4>
+            <div
+              class="progress-bar"
+              id="505642"
+              role="progressbar"
+              style="width: 76%; background: rgb(254, 252, 3);"
+              aria-valuenow="7.6"
+              aria-valuemin="0"
+              aria-valuemax="10"
+            >
+              &#x2606; ${movie.vote_average}/10
+            </div>
+          </div>
+        </div>
+      </div>
+    `
     const movieDiv = document.createElement("div");
+    movieDiv.setAttribute("id", `${movie.title}`);
     movieDiv.innerHTML = `
-        <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
-      movie.title
-    } poster">
-    <h3>${movie.title}</h3>
-    <h5>Rating:</h5> <span>&#x2606; ${movie.vote_average}/10</span>
-        `;
+    <div class="container">
+    <div class="row">
+        <div class="col card">${movieStyle}</div>
+        <div class="col card">${movieStyle}</div>
+        <div class="col card">${movieStyle}</div>
+    </div>
+    <div class="row">
+        <div class="col card">${movieStyle}</div>
+        <div class="col card">${movieStyle}</div>
+        <div class="col card">${movieStyle}</div>
+    </div>
+</div>
+    `;
+
+    //     `
+    //     <div class="card-deck">
+    //   <div class="card">
+    //     <img class="card-img-top" src="${
+    //       PROFILE_BASE_URL + movie.backdrop_path
+    //     }" alt="${movie.title}">
+    //     <div class="card-body">
+    //       <h5 class="card-title">${movie.title}</h5>
+    //       <p class="card-text">This is a wider carde bit longer.</p>
+    //     </div>
+    //     <div class="card-footer">
+    //     <h4>Rating:</h4>
+    //     <div class="progress-bar" id="505642" role="progressbar" style="width: 76%; background: rgb(254, 252, 3);" aria-valuenow="7.6" aria-valuemin="0" aria-valuemax="10">&#x2606; ${
+    //       movie.vote_average
+    //     }/10</div>
+
+    //     </div>
+    //   </div>
+    // </div>
+    //     `;
+    // `
+    //     <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
+    //   movie.title
+    // } poster">
+    // <h3>${movie.title}</h3>
+    // <h5>Rating:</h5> <span>&#x2606; ${movie.vote_average}/10</span>
+    //     `;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
@@ -114,10 +182,10 @@ const renderMovies = (movies) => {
   //search function
   let sInput = document.getElementById("search-input");
   let sButton = document.getElementById("search-button");
-  sButton.addEventListener('click', function(event){
+  sButton.addEventListener("click", function (event) {
     event.preventDefault();
     let sItem = sInput.value;
-  })
+  });
 };
 
 const renderActors = (actors) => {
@@ -181,22 +249,12 @@ const renderDirector = (movies) => {
 //   return container;
 // };
 
-// const renderActor = (actor) => {
-//   CONTAINER.innerHTML = `
-//   <div class="row">
-
-//       <h2 id="movie-title">${actor.name}</h2>
-
-// </div>
-//   `;
-// };
-
 const renderActor = (actorID) => {
   const actors = document.querySelectorAll("a");
   for (let i = 0; i < actors.length; i++) {
-    actors[i].addEventListener("click", () => {
-      fetchActorByID(actorID,actors[i].id);
-
+    actors[i].addEventListener("click", (event) => {
+      event.preventDefault();
+      fetchActorByID(actorID, actors[i].id);
     });
   }
 };
