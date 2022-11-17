@@ -95,6 +95,15 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
+const fetchSearch = async (word) => {
+  const url = constructUrl(`search/multi`);
+  const searchUrl = `${url}&query=${word}`;
+  const res = await fetch(`${searchUrl}`);
+  return res.json();
+  //if (data.Response == "True") (console.log(data.Search));
+};
+
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
   movies.map((movie) => {
@@ -111,18 +120,29 @@ const renderMovies = (movies) => {
     });
     CONTAINER.appendChild(movieDiv);
   });
+}
 //search function begins
-  //grabbing the word
-  let sInput = document.getElementById("search-input");
-  let sButton = document.getElementById("search-button");
-  sButton.addEventListener('click', function(event){
+  let searchInput = document.getElementById("search-input");
+  let searchButton = document.getElementById("search-button");
+  let searchItem = searchInput.value;
+
+  function displayMovies(movies) {
+    let searchPage = document.createElement("div");
+    searchPage.innerHTML = "";
+    for (let i = 0; i < movies.length; i++){
+      let searchListItem = document.createElement("div");
+      console.log(searchListItem);
+      searchPage.appendChild(searchListItem);
+    }
+  }
+ 
+  searchButton.addEventListener('click', function(event){
     event.preventDefault();
-    let sItem = sInput.value;
-    console.log(sItem)
-  //finding the movies
-    console.log(fetchMovies(sItem));
+    displayMovies(searchItem);
+    console.log(fetchSearch(searchItem));
   })
-};
+  
+    //console.log(searchItem);
 
 const renderActors = (actors) => {
   let container = "";
