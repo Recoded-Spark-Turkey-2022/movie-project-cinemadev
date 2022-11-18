@@ -8,7 +8,9 @@ const CONTAINER = document.querySelector(".container");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
+  // const movieD = await fetchMovie();
   renderMovies(movies.results);
+  // renderGenres(movieD);
 };
 
 // Don't touch this function please
@@ -17,6 +19,41 @@ const constructUrl = (path) => {
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
   )}`;
 };
+
+const fetchSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/multi?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+  )}&query=${query}`;
+  const res = await fetch(url);
+  return res.json();
+};
+
+const searchDetails = async (query) => {
+  const searchRes = await fetchSearch(query);
+  return searchRes;
+};
+
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
+const searchResults = () => {
+  searchDetails(searchInput.value).then((data) => {
+    data.results.map((res) => {
+      console.log(res.title);
+      CONTAINER.innerHTML = `
+      <div>
+      <h2>Movie Name:</h2><h5>${res.title}</h5>
+      </div>
+      `;
+    });
+  });
+};
+
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  searchResults();
+  searchInput.value = "";
+});
 
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
@@ -80,7 +117,6 @@ const fetchActorByID = async (movieId, actorId) => {
       }
     }
   });
-  // }
 };
 
 const fetchRelated = async (movieId) => {
@@ -95,79 +131,71 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
+// const renderGenres = (movieD) => {
+//   // for (let i = 0; i < movies.genres.length; i++) {
+//     movieD.map((movie) => {
+//       console.log(movie);
+//     });
+//   // }
+// };
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  const moviesContainer = document.createElement("div");
+  moviesContainer.classList.add("row");
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
-    movieDiv.setAttribute("id", `${movie.title}`);
+    movieDiv.classList.add("col-4");
+    movieDiv.setAttribute("style", "margin-top:20px;");
+
     movieDiv.innerHTML = `
-    <div class="card-deck">
-      <div class="card">
-      <b><h5 class="card-title">${movie.title}</h5></b>
+    
+    <a class="movie-div" href="#">
+    <div class="card">
 
-        <img
-            class="card-img-top"
-            src="${PROFILE_BASE_URL + movie.backdrop_path}"
-            alt="${movie.title}"
-          />
-          <div class="card-body">
-            <p class="card-text">This.</p>
-          </div>
-          <div class="card-footer">
-            <h4>Rating:</h4>
-              &#x2606; ${movie.vote_average}/10</div>
-        </div>
-     </div>
+    <div class="hover-content">
+    ${movie.overview}
+    </div>    
+      <img class="card-img-top" src="${
+        PROFILE_BASE_URL + movie.backdrop_path
+      }" alt="Card image cap">
+    <h2 class="card-title">${movie.title}</h2>
+      <div class="card-body">
       </div>
+      <div class="card-footer">
+        <small class="text-muted">
+        <h4>Rating:&#x2606; ${movie.vote_average}/10</h4>
+        </small>
+      </div>
+      </div>
+      </a>
     `;
-    //     `
-    //     <div class="container">
-    //     <div class="row">
-    //         <div class="col card">${movieStyle}</div>
-    //         <div class="col card">${movieStyle}</div>
-    //         <div class="col card">${movieStyle}</div>
-    //     </div>
-    // </div>
-    //     `;
 
-    //     `
-    //     <div class="card-deck">
-    //   <div class="card">
-    //     <img class="card-img-top" src="${
-    //       PROFILE_BASE_URL + movie.backdrop_path
-    //     }" alt="${movie.title}">
-    //     <div class="card-body">
-    //       <h5 class="card-title">${movie.title}</h5>
-    //       <p class="card-text">This is a wider carde bit longer.</p>
-    //     </div>
-    //     <div class="card-footer">
-    //     <h4>Rating:</h4>
-    //     <div class="progress-bar" id="505642" role="progressbar" style="width: 76%; background: rgb(254, 252, 3);" aria-valuenow="7.6" aria-valuemin="0" aria-valuemax="10">&#x2606; ${
-    //       movie.vote_average
-    //     }/10</div>
-
-    //     </div>
-    //   </div>
-    // </div>
-    //     `;
     // `
-    //     <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
-    //   movie.title
-    // } poster">
-    // <h3>${movie.title}</h3>
-    // <h5>Rating:</h5> <span>&#x2606; ${movie.vote_average}/10</span>
-    //     `;
+    //   <div class="card col-10 col-sm-4 col-md-4 col-xl-3  px-2 pt-4 m-5 ">
+    //   <b><h5 class="card-title">${movie.title}</h5></b>
+
+    //     <img
+    //         class="card-img-top"
+    //         src="${PROFILE_BASE_URL + movie.backdrop_path}"
+    //         alt="${movie.title}"
+    //       />
+    //       <div class="card-body">
+    //         <p class="card-text">This.</p>
+    //       </div>
+    //       <div class="card-footer">
+    //         <h4>Rating:</h4>
+    //           &#x2606; ${movie.vote_average}/10</div>
+    //     </div>
+
+    //   </div>
+    // `;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-    CONTAINER.appendChild(movieDiv);
-  });
-  //search function
-  let sInput = document.getElementById("search-input");
-  let sButton = document.getElementById("search-button");
-  sButton.addEventListener("click", function (event) {
-    event.preventDefault();
-    let sItem = sInput.value;
+    moviesContainer.appendChild(movieDiv);
+    CONTAINER.appendChild(moviesContainer);
+    // CONTAINER.className += "row mx-auto justify-content-center my-5";
   });
 };
 
