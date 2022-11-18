@@ -4,6 +4,7 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const PROFILE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 const BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w780";
 const CONTAINER = document.querySelector(".container");
+const homeBtn = document.querySelector(".home-btn");
 
 // Don't touch this function please
 const autorun = async () => {
@@ -256,3 +257,9 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
 };
 
 document.addEventListener("DOMContentLoaded", autorun);
+
+homeBtn.addEventListener("click", () => {
+  CONTAINER.innerHTML = "";
+
+  autorun();
+});
