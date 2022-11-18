@@ -1,16 +1,112 @@
+* {
+  box-sizing: border-box;
+  font-size: 0.5;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
 h2 {
-    font-size: 1.5rem;
-    color: #EB6440;
+  font-size: 1.5rem;
+  color: #eb6440;
+  text-align: center;
+}
+
+h4 {
+  text-align: center;
+}
+
+small {
+  text-align: center;
+}
+
+.row a {
+  text-decoration: none;
+}
+
+.div {
+  transition: all 1s;
+}
+
+.hover-content {
+  opacity: 0;
+  color: black;
+  height: 0;
+}
+
+.card:hover .hover-content {
+  opacity: 1;
+  height: auto;
 }
 
 #movie-backdrop {
-    width: 100%;
+  max-width: 20%;
 }
 
-.container {
-    padding-top: 0px;
+.main-container {
+  background: url(/images/films.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
+
+/*
+.container {
+   padding: 0px;
+  resize: both;
+  display: grid;
+  overflow: auto;
+  padding: 10px;  */
+/* grid-template-columns: repeat(3, minmax(0, 1fr));
+   justify-content: center;
+  column-gap: 10px;  */
+/* background: url(images/films.jpg) no-repeat center center fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; 
+  margin: 0px !important; 
+} */
+
+/* .another-Container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-content: center;
+  column-gap: 10px;
+} */
+
+/*  .container div {
+  font-size: 20px;
+  margin: 10px;
+  border-radius: 1rem;
+}
+
+.container h5 {
+  font-size: 25px;
+  text-align: center;
+  color: red;
+}
+
+.card {
+  width: auto;
+} */
 
 #actors {
-    margin: 24px 16px 0 0;
+  margin: 24px 16px 0 0;
 }
+
+/* #genre-list-item {
+  position: relative;
+  display: inline-block;
+}
+
+#navbarDropdownMenuLink {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(8, 103, 210, 0.2);
+  z-index: 1;
+} */

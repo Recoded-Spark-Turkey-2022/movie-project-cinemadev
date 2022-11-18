@@ -9,6 +9,7 @@ const homeBtn = document.querySelector(".home-btn");
 // Don't touch this function please
 const autorun = async () => {
   const movies = await fetchMovies();
+
   renderMovies(movies.results);
 };
 
@@ -18,6 +19,42 @@ const constructUrl = (path) => {
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
   )}`;
 };
+
+const fetchSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+  )}&query=${query}`;
+  const res = await fetch(url);
+  return res.json();
+};
+
+const searchDetails = async (query) => {
+  const searchRes = await fetchSearch(query);
+  return searchRes;
+};
+
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
+const searchResults = () => {
+  searchDetails(searchInput.value).then((data) => {
+    console.log( renderMovies(data.results));
+    // data.results.map((movie) => {
+    //   console.log(movie);
+    //   // if(res.title == searchInput.value)
+    //   CONTAINER.innerHTML = `
+    //   <h1>${movie.title}</h1>
+    //   `;
+    // });
+  });
+  // return CONTAINER;
+};
+
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  searchResults();
+  searchInput.value = "";
+});
 
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
@@ -49,12 +86,12 @@ const fetchActor = async (movieId) => {
   return res.json();
 };
 
-const fetchActorByID = async (movieId,actorId) => {
+const fetchActorByID = async (movieId, actorId) => {
   const actors = await fetchActor(movieId);
   actors.cast.map((actor) => {
     if (actorId == actor.id) {
-      console.log("inside if");
       CONTAINER.innerHTML = `
+      <div class="card">
       <div>
     <h6>${JSON.stringify(actor.name)}</h6>
     </div>  
@@ -64,6 +101,7 @@ const fetchActorByID = async (movieId,actorId) => {
     <div>
     <h4>Popularity:</h4>
     <p>${actor.popularity}</p>
+    </div>
     </div>
     `;
       if (actor.gender === "1") {
@@ -81,7 +119,6 @@ const fetchActorByID = async (movieId,actorId) => {
       }
     }
   });
-  // }
 };
 
 const fetchRelated = async (movieId) => {
@@ -96,29 +133,89 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
+const naji = (genresid) => {
+  // console.log(genresid);
+  genresid.forEach((genreid) => {
+    // console.log(genreid);
+    return genreid;
+  });
+};
+
+const fetchGenres = async () => {
+  const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+  )}`;
+  const res = await fetch(url);
+  return res.json();
+};
+
+const genresDetails = async () => {
+  const genresRes = await fetchGenres();
+  return genresRes;
+};
+
+const fetchGenreByID = () => {
+  // let container = "";
+  genresDetails().then((data) => {
+    // console.log(data);
+    data.genres.map((genre) => {
+      // console.log(genre);
+      //  genre.name;
+      //  if (genreId == genre.id) {
+      // container = genre.name;
+      //  }
+      // return container;
+    });
+  });
+};
+
+// const renderGender = (genderId) => {
+//   for (let i = 0; i < genderId.length; i++) {
+//     fetchGenreByID(genderId[i].name);
+//     // console.log(genderId[i])
+//   }
+// };
+
+// console.log(fetchGenreByID());
+
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  const moviesContainer = document.createElement("div");
+  moviesContainer.classList.add("row");
   movies.map((movie) => {
     const movieDiv = document.createElement("div");
+    movieDiv.classList.add("col-4");
+    movieDiv.setAttribute("style", "margin-top:20px;");
     movieDiv.innerHTML = `
-        <img src="${PROFILE_BASE_URL + movie.backdrop_path}" alt="${
-      movie.title
-    } poster">
-    <h3>${movie.title}</h3>
-    <h5>Rating:</h5> <span>&#x2606; ${movie.vote_average}/10</span>
-        `;
+    <a class="movie-div" href="#">
+    <div class="card">
+    <div class="hover-content">
+    ${movie.overview}
+    </div>    
+      <img class="card-img-top" src="${
+        PROFILE_BASE_URL + movie.backdrop_path
+      }" alt="Card image cap">
+    <h2 class="card-title">${movie.title}</h2>
+      <div class="card-body">
+      <p>
+      Genres:
+      ${naji(movie.genre_ids)}
+      </p>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">
+        <h4>Rating:&#x2606; ${movie.vote_average}/10</h4>
+        </small>
+      </div>
+      </div>
+      </a>
+    `;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
     });
-    CONTAINER.appendChild(movieDiv);
+    moviesContainer.appendChild(movieDiv);
+    CONTAINER.appendChild(moviesContainer);
   });
-  //search function
-  let sInput = document.getElementById("search-input");
-  let sButton = document.getElementById("search-button");
-  sButton.addEventListener('click', function(event){
-    event.preventDefault();
-    let sItem = sInput.value;
-  })
 };
 
 const renderActors = (actors) => {
@@ -172,32 +269,12 @@ const renderDirector = (movies) => {
   return container;
 };
 
-// const renderRating = (movies) => {
-//   let container = "";
-//   movies.crew.map((director) => {
-//     if (director.job === "Director") {
-//       container = `<p>${director.name}</p>`
-//     }
-//   });
-//   return container;
-// };
-
-// const renderActor = (actor) => {
-//   CONTAINER.innerHTML = `
-//   <div class="row">
-
-//       <h2 id="movie-title">${actor.name}</h2>
-
-// </div>
-//   `;
-// };
-
 const renderActor = (actorID) => {
   const actors = document.querySelectorAll("a");
   for (let i = 0; i < actors.length; i++) {
-    actors[i].addEventListener("click", () => {
-      fetchActorByID(actorID,actors[i].id);
-
+    actors[i].addEventListener("click", (event) => {
+      event.preventDefault();
+      fetchActorByID(actorID, actors[i].id);
     });
   }
 };
@@ -209,9 +286,9 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
   const trailer = renderTrailer(movieTrailer);
   const productionComp = renderComp(movieRes);
   const directorName = renderDirector(movieActors);
-  // const rating = renderDirector(movieRating);
 
   CONTAINER.innerHTML = `
+  <div class="card">
     <div class="row">
         <div class="col-md-4">
           <img id="movie-backdrop" src="${
@@ -252,6 +329,7 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         </ul>
         </div>
         </div>
+    </div>
     </div>`;
   renderActor(movieActors.id);
 };
