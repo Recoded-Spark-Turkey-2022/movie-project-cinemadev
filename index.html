@@ -1,18 +1,128 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/e9fa753156.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Movie</title>
-</head>
+  </head>
 
 <body>
-    <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light" id="navigation-bar">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      <h2 class=""><i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV</h2>
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item" id="home-page-list-item">
+          <a class="nav-link home-btn" href="#" id="home-page">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item" id="actors-page-list-item">
+          <a class="nav-link" href="#" id="actors-page">Actors<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item dropdown" id="genre-list-item">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Genres
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          </div>
+        </li>
+        <li class="nav-item dropdown" id="filter-list-item">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
+          </svg></a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" id="search-input" placeholder="" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" id="search-button" type="submit">Search</button>
+      </form>
     </div>
-    <script type="text/javascript" src="script.js"></script>
+  </nav>
+  <div class="container">
+
+  </div>
+  <footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col">
+              <h2 class=""><i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV</h2>
+                <ul>
+                    <li><a href="#">about us</a></li>
+                    <li><a href="#">our team</a></li>
+                    <li><a href="#">privacy policy</a></li>
+  
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>get help</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">contact us</a></li>
+                    <li><a href="#">request movie/a></li>
+                    <li><a href="#">payment options</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Our team</h4>
+                <ul>
+                    <li><a href="#">Furkan Akkaya</a></li>
+                    <li><a href="#">Omer Amro Alestvani</a></li>
+                    <li><a href="#">Pelin karakoca</a></li>
+                    <li><a href="#">Naji Alhousami</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Naji Alhusami</h4>
+                <div class="social-links">
+                    <a href="https://github.com/naji-alhusami"><i class="fab fa-github"></i></a> 
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <h4>Omer Alestvani</h4>
+                <div class="social-links">
+                  <a href="https://github.com/Omer-Amr"><i class="fab fa-github"></i></a> 
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <h4>Pelin karakoca</h4>
+                <div class="social-links">
+                  <a href="https://github.com/pelinkarakoca"><i class="fab fa-github"></i></a> 
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+              <h4>Furkan Akkaya</h4>
+                <div class="social-links">
+                  <a href="https://github.com/furkanakkayaa"><i class="fab fa-github"></i></a> 
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <footer class="copyright">&copy; Copyright 2022 Cinemadev</footer>
+  <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>
