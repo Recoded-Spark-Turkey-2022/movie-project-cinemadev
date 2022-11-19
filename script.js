@@ -95,13 +95,24 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
-const fetchSearch = async (word) => {
-  const url = constructUrl(`search/multi`);
-  const searchUrl = `${url}&query=${word}`;
-  const res = await fetch(`${searchUrl}`);
+const fetchSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/multi?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=")}&query=${query}`;
+  const res = await fetch(url);
   return res.json();
-  //if (data.Response == "True") (console.log(data.Search));
 };
+
+const fetchGenre = async () => {
+  const url = constructUrl("genre/movie/list");
+  const res = await fetch(url);
+  const data = await res.json();
+  return data['genres']
+  ;}
+
+const searchDetails = async (query) => {
+  const searchRes = await fetchSearch(query);
+  return searchRes;
+  };
 
 
 // You'll need to play with this function in order to add features and enhance the style.
@@ -122,27 +133,58 @@ const renderMovies = (movies) => {
   });
 }
 //search function begins
+
   let searchInput = document.getElementById("search-input");
   let searchButton = document.getElementById("search-button");
-  let searchItem = searchInput.value;
-
-  function displayMovies(movies) {
-    let searchPage = document.createElement("div");
-    searchPage.innerHTML = "";
-    for (let i = 0; i < movies.length; i++){
-      let searchListItem = document.createElement("div");
-      console.log(searchListItem);
-      searchPage.appendChild(searchListItem);
-    }
+//Change this function
+  const searchResults = () => {
+    searchDetails(searchInput.value).then((data) => {
+      data.results.map((res) => {
+        CONTAINER.innerHTML =
+        `<div>
+        <h2>Movie Name:</h2>
+        <h5>${res.title}</h5>
+        </div>`
+       console.log(CONTAINER.innerHTML);
+      })
+    })
   }
- 
   searchButton.addEventListener('click', function(event){
     event.preventDefault();
-    displayMovies(searchItem);
-    console.log(fetchSearch(searchItem));
+    searchResults();
+    searchInput.value = "";
+    //console.log(fetchSearch(searchInput.value));
   })
   
-    //console.log(searchItem);
+  //console.log(searchItem);
+//navbar genre
+  const genreDiv = document.getElementById("navbarDropdownGenre");
+
+  const genreResults = async () => {
+    const genreList = await fetchGenre();
+    const genreListDiv = document.createElement("ul")
+    genreListDiv.setAttribute("class", "DropDownGenreList")
+    genreDiv.appendChild(genreListDiv);
+    for (let element in genreList) {
+      const eachGenre = document.createElement("li");
+      eachGenre.textContent = genreList[element].name;
+      genreListDiv.appendChild(eachGenre);
+      document.querySelector(".DropDownGenreList").style.display = "none";
+    }
+  }
+  genreResults();
+
+  genreDiv.addEventListener('mouseover', function(e) {
+    //console.log("mouse");
+    e.preventDefault();
+    document.querySelector(".DropDownGenreList").style.display = "block";
+    });
+  genreDiv.addEventListener('mouseout', function(){
+    document.querySelector(".DropDownGenreList").style.display = "none";
+    //console.log("mouse out!")
+  });
+  //console.log(fetchGenre(movies));
+
 
 const renderActors = (actors) => {
   let container = "";
