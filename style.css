@@ -1,9 +1,14 @@
+h2 {
+    font-size: 1.5rem;
+    color: #EB6440;
+}
+
 #movie-backdrop {
     width: 100%;
 }
 
 .container {
-    padding-top: 32px;
+    padding-top: 0px;
 }
 
 #actors {

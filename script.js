@@ -111,6 +111,13 @@ const renderMovies = (movies) => {
     });
     CONTAINER.appendChild(movieDiv);
   });
+  //search function
+  let sInput = document.getElementById("search-input");
+  let sButton = document.getElementById("search-button");
+  sButton.addEventListener('click', function(event){
+    event.preventDefault();
+    let sItem = sInput.value;
+  })
 };
 
 const renderActors = (actors) => {
