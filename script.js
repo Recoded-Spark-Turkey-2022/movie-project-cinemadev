@@ -98,8 +98,9 @@ const fetchTrailer = async (movieId) => {
 const fetchSearch = async (query) => {
   const url = `https://api.themoviedb.org/3/search/multi?api_key=${atob(
     "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI=")}&query=${query}`;
+    console.log(url);
   const res = await fetch(url);
-  return res.json();
+  return res.json()
 };
 
 const fetchGenre = async () => {
@@ -139,14 +140,14 @@ const renderMovies = (movies) => {
 //Change this function
   const searchResults = () => {
     searchDetails(searchInput.value).then((data) => {
-      data.results.map((res) => {
+      /*data.results.map((res) => {
         CONTAINER.innerHTML =
         `<div>
         <h2>Movie Name:</h2>
         <h5>${res.title}</h5>
         </div>`
        console.log(CONTAINER.innerHTML);
-      })
+      })*/
     })
   }
   searchButton.addEventListener('click', function(event){
@@ -183,7 +184,6 @@ const renderMovies = (movies) => {
     document.querySelector(".DropDownGenreList").style.display = "none";
     //console.log("mouse out!")
   });
-  //console.log(fetchGenre(movies));
 
 
 const renderActors = (actors) => {
