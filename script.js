@@ -28,6 +28,13 @@ const fetchSearch = async (query) => {
   return res.json();
 };
 
+const fetchGenre = async () => {
+  const url = constructUrl("genre/movie/list");
+  const res = await fetch(url);
+  const data = await res.json();
+  return data['genres']
+  ;}
+
 const searchDetails = async (query) => {
   const searchRes = await fetchSearch(query);
   return searchRes;
@@ -56,6 +63,29 @@ searchButton.addEventListener("click", (e) => {
   searchInput.value = "";
 });
 
+const genreDiv = document.getElementById("navbarDropdownGenre");
+const genreResults = async () => {
+  const genreList = await fetchGenre();
+  const genreListDiv = document.createElement("ul")
+  genreListDiv.setAttribute("class", "DropDownGenreList")
+  genreDiv.appendChild(genreListDiv);
+  for (let element in genreList) {
+    const eachGenre = document.createElement("li");
+    eachGenre.textContent = genreList[element].name;
+    genreListDiv.appendChild(eachGenre);
+    document.querySelector(".DropDownGenreList").style.display = "none";
+  }
+}
+genreResults();
+genreDiv.addEventListener('mouseover', function(e) {
+  //console.log("mouse");
+  e.preventDefault();
+  document.querySelector(".DropDownGenreList").style.display = "block";
+  });
+genreDiv.addEventListener('mouseout', function(){
+  document.querySelector(".DropDownGenreList").style.display = "none";
+  //console.log("mouse out!")
+});
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
