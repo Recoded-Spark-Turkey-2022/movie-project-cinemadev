@@ -39,7 +39,7 @@ const searchDetails = async (query) => {
   const searchRes = await fetchSearch(query);
   return searchRes;
 };
-
+// search part
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
@@ -63,6 +63,9 @@ searchButton.addEventListener("click", (e) => {
   searchInput.value = "";
 });
 
+
+
+//genre part (if i write genre one more time i will puke)
 const genreDiv = document.getElementById("navbarDropdownGenre");
 const genreResults = async () => {
   const genreList = await fetchGenre();
