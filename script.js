@@ -19,42 +19,6 @@ const constructUrl = (path) => {
   )}`;
 };
 
-const fetchSearch = async (query) => {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${atob(
-    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
-  )}&query=${query}`;
-  const res = await fetch(url);
-  return res.json();
-};
-
-const searchDetails = async (query) => {
-  const searchRes = await fetchSearch(query);
-  return searchRes;
-};
-
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
-
-const searchResults = () => {
-  searchDetails(searchInput.value).then((data) => {
-    console.log( renderMovies(data.results));
-    // data.results.map((movie) => {
-    //   console.log(movie);
-    //   // if(res.title == searchInput.value)
-    //   CONTAINER.innerHTML = `
-    //   <h1>${movie.title}</h1>
-    //   `;
-    // });
-  });
-  // return CONTAINER;
-};
-
-searchButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  searchResults();
-  searchInput.value = "";
-});
-
 // You may need to add to this function, definitely don't delete it.
 const movieDetails = async (movie) => {
   const movieRes = await fetchMovie(movie.id);
@@ -65,120 +29,49 @@ const movieDetails = async (movie) => {
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer);
 };
 
-// This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
-const fetchMovies = async () => {
-  const url = constructUrl(`movie/now_playing`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-// Don't touch this function please. This function is to fetch one movie.
-const fetchMovie = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchActor = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}/credits`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchActorByID = async (movieId, actorId) => {
-  const actors = await fetchActor(movieId);
-  actors.cast.map((actor) => {
-    if (actorId == actor.id) {
-      CONTAINER.innerHTML = `
-      <div class="card">
-      <div>
-    <h6>${JSON.stringify(actor.name)}</h6>
-    </div>  
-    <div>
-    <img src="${BACKDROP_BASE_URL + actor.profile_path}" />
-    </div>
-    <div>
-    <h4>Popularity:</h4>
-    <p>${actor.popularity}</p>
-    </div>
-    </div>
-    `;
-      if (actor.gender === "1") {
-        CONTAINER.innerHTML += `
-    <div>
-      <p> Female </p>
-    </div>
-      `;
-      } else {
-        CONTAINER.innerHTML += `
-    <div>
-      <p> Male </p>
-    </div>
-      `;
-      }
-    }
-  });
-};
-
-const fetchRelated = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}/similar`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchTrailer = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}/videos`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const naji = (genresid) => {
-  // console.log(genresid);
-  genresid.forEach((genreid) => {
-    // console.log(genreid);
-    return genreid;
-  });
-};
-
+//Navbar - fetch Genres:
 const fetchGenres = async () => {
-  const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${atob(
-    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
-  )}`;
-  const res = await fetch(url);
-  return res.json();
-};
-
-const genresDetails = async () => {
-  const genresRes = await fetchGenres();
-  return genresRes;
-};
-
-const fetchGenreByID = () => {
-  // let container = "";
-  genresDetails().then((data) => {
-    // console.log(data);
-    data.genres.map((genre) => {
-      // console.log(genre);
-      //  genre.name;
-      //  if (genreId == genre.id) {
-      // container = genre.name;
-      //  }
-      // return container;
+  const url = constructUrl(`genre/movie/list`);
+  const result = await fetch(url);
+  const genresResults = await result.json();
+  // console.log(genresResults);
+  genresResults.genres.forEach((genre) => {
+    const genresList = document.createElement("li");
+    genresList.innerHTML = `<a id="genre-btn" href="#">${genre.name}</a>`;
+    document.getElementById("dropgeneres").appendChild(genresList);
+    genresList.addEventListener("click", () => {
+      console.log("clicked");
+      fetch(
+        `${TMDB_BASE_URL}/discover/movie?api_key=${atob(
+          "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+        )}&with_genres=${genre.id}`
+      )
+        .then((resp) => resp.json())
+        .then((data) => renderMovies(data.results));
     });
   });
 };
+fetchGenres();
 
-// const renderGender = (genderId) => {
-//   for (let i = 0; i < genderId.length; i++) {
-//     fetchGenreByID(genderId[i].name);
-//     // console.log(genderId[i])
-//   }
-// };
+//Navbar - fetch all Actors:
+const fetchActors = async () => {
+  const url = constructUrl("person/popular");
+  const result = await fetch(url);
+  const actorsResults = await result.json();
+  // console.log(actorsResults);
+  renderActors(actorsResults.results);
+};
 
-// console.log(fetchGenreByID());
+const fetchActor = async (actor) => {
+  const url = constructUrl(`person/${actor.id}`);
+  const result = await fetch(url);
+  const actorResults = await result.json();
+  renderActor(actorResults);
+};
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovies = (movies) => {
+  CONTAINER.innerHTML = "";
   const moviesContainer = document.createElement("div");
   moviesContainer.classList.add("row");
   movies.map((movie) => {
@@ -194,7 +87,7 @@ const renderMovies = (movies) => {
       <img class="card-img-top" src="${
         PROFILE_BASE_URL + movie.backdrop_path
       }" alt="Card image cap">
-    <h2 class="card-title">${movie.title}</h2>
+      <h2 class="card-title">${movie.title}</h2>
       <div class="card-body">
       <p>
       Genres:
@@ -218,6 +111,140 @@ const renderMovies = (movies) => {
 };
 
 const renderActors = (actors) => {
+  CONTAINER.innerHTML = "";
+  const actorsContainer = document.createElement("div");
+  actorsContainer.classList.add("row");
+  actors.map((actor) => {
+    // console.log(actor);
+    const actorDiv = document.createElement("div");
+    actorDiv.classList.add("col-4");
+    actorDiv.setAttribute("style", "margin-top:20px;");
+    actorDiv.innerHTML = `
+    <a class="movie-div" href="#">
+    <div class="card">  
+      <img class="card-img-top" src="${
+        PROFILE_BASE_URL + actor.profile_path
+      }" alt="Card image cap">
+      <h2 class="card-title">${actor.name}</h2>
+      <div class="card-body">
+      </div>
+      <div class="card-footer">
+
+      </div>
+      </div>
+      </a>
+    `;
+    actorsContainer.appendChild(actorDiv);
+    CONTAINER.appendChild(actorsContainer);
+    actorDiv.addEventListener("click", () => {
+      fetchActor(actor);
+    });
+  });
+};
+
+const renderActor = (actor) => {
+  CONTAINER.innerHTML = "";
+  CONTAINER.classList.add("container");
+  const actorDiv = document.createElement("div");
+  actorDiv.classList.add("actorDiv");
+  console.log(actor);
+  actorDiv.innerHTML = `
+  <div class="profile">
+    <img src="${BACKDROP_BASE_URL + actor.profile_path}" alt="" />
+  </div>
+  <div class="info">
+    <h2>${actor.name}</h2>
+    
+    <p>Gender: ${actor.gender === 1 ? "Woman" : "Man"}</p>
+    <p>Birthday: ${actor.birthday}</p>
+    <p>Biography: ${actor.biography}</p>
+    
+  </div>
+  
+`;
+CONTAINER.appendChild(actorDiv);
+};
+
+const fetchSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+  )}&query=${query}`;
+  const res = await fetch(url);
+  return res.json();
+};
+
+const searchDetails = async (query) => {
+  const searchRes = await fetchSearch(query);
+  return searchRes;
+};
+
+const searchInput = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+
+const searchResults = () => {
+  searchDetails(searchInput.value).then((data) => {
+    console.log(renderMovies(data.results));
+    // data.results.map((movie) => {
+    //   console.log(movie);
+    //   // if(res.title == searchInput.value)
+    //   CONTAINER.innerHTML = `
+    //   <h1>${movie.title}</h1>
+    //   `;
+    // });
+  });
+  // return CONTAINER;
+};
+
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  searchResults();
+  searchInput.value = "";
+});
+
+// This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
+const fetchMovies = async () => {
+  const url = constructUrl(`movie/now_playing`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+// Don't touch this function please. This function is to fetch one movie.
+const fetchMovie = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const fetchRelated = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/similar`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const fetchTrailer = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/videos`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+const naji = (genresid) => {
+  // console.log(genresid);
+  genresid.forEach((genreid) => {
+    // console.log(genreid);
+    return genreid;
+  });
+};
+
+// const renderGender = (genderId) => {
+//   for (let i = 0; i < genderId.length; i++) {
+//     fetchGenreByID(genderId[i].name);
+//     // console.log(genderId[i])
+//   }
+// };
+
+// console.log(fetchGenreByID());
+
+const renderActorsss = (actors) => {
   let container = "";
   actors.cast.slice(0, 5).map((actor) => {
     container += `
@@ -268,19 +295,19 @@ const renderDirector = (movies) => {
   return container;
 };
 
-const renderActor = (actorID) => {
-  const actors = document.querySelectorAll("a");
-  for (let i = 0; i < actors.length; i++) {
-    actors[i].addEventListener("click", (event) => {
-      event.preventDefault();
-      fetchActorByID(actorID, actors[i].id);
-    });
-  }
-};
+// const renderActor = (actorID) => {
+//   const actors = document.querySelectorAll("a");
+//   for (let i = 0; i < actors.length; i++) {
+//     actors[i].addEventListener("click", (event) => {
+//       event.preventDefault();
+//       fetchActorByID(actorID, actors[i].id);
+//     });
+//   }
+// };
 
 // You'll need to play with this function in order to add features and enhance the style.
 const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
-  const actors = renderActors(movieActors);
+  const actors = renderActorsss(movieActors);
   const similar = renderRelated(movieRelated);
   const trailer = renderTrailer(movieTrailer);
   const productionComp = renderComp(movieRes);
@@ -292,10 +319,10 @@ const renderMovie = (movieRes, movieActors, movieRelated, movieTrailer) => {
         <div class="col-md-4">
           <img id="movie-backdrop" src="${
             BACKDROP_BASE_URL + movieRes.backdrop_path
-          }">
+          }" height="500px" width="300px">
         </div>
         <div class="col-md-8">
-            <h2 id="movie-title">${movieRes.title}</h2>
+            <h1 id="movie-title">${movieRes.title}</h1>
             <p id="movie-release-date"><b>Release Date:</b> ${
               movieRes.release_date
             }</p>
