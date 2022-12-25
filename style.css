@@ -6,219 +6,48 @@
   box-sizing: border-box;
 }
 
-#logo {
-  margin: 0;
-  padding: 0;
-  top: 0;
-  left: 0;
-  height: 100%;
-  height: 70px;
-  display: flex;
-  align-items: center;
-}
-
 nav {
   width: 100%;
-  height: 50px;
-  background-image: linear-gradient(#ffffff, rgb(150, 150, 150));
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  font-family: "Zen Dots", sans-serif;
-}
-
-#navbar {
-  display: flex;
-  height: 100%;
-  /* max-width: 1250px; */
-  width: 100%;
-  align-items: center;
-  margin: auto;
-  justify-content: space-between;
-
-  padding: 0 25px;
-}
-
-#nav-links {
-  display: flex;
-  line-height: 70px;
-  height: 100%;
-}
-
-#links {
-  display: flex;
-  align-items: center;
-  margin: 0;
-}
-
-#search-form {
-  display: flex;
-  align-items: center;
-}
-
-#li-nav {
-  position: relative;
-  display: flex;
-  /* width:auto ; */
-  align-items: center;
-  justify-content: space-between;
-  list-style: none;
-  padding: 0 14px;
-  font-size: 13.5px;
-}
-
-#genre-btn{
-  height: 100%;
-  text-decoration: none;
-  /* white-space: nowrap; */
-  color: #fff;
+  height: 40px;
   font-size: 14px;
-  font-weight: 500;
+  background-image:  rgb(108, 108, 108);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   font-family: "Zen Dots", sans-serif;
 }
 
-.sub-menu{
-  position: absolute;
-  top: 70px;
-  left: 0;
-  list-style: none;
-  line-height: 40px;
-  transform: translateY(-3em);
-  background:rgb(150, 150, 150);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 4px 4px;
-  z-index: -1;
-  visibility: hidden;
-  transition: all 0.5s ease 0s,visibility 0s linear 0s,z-index 0s linear 0.01s;
+#searchBox {
+  width: 200px;
+  height: 35px;
 }
 
-#li-nav:hover .htmlCss-sub-menu{
-  visibility: visible;
-  opacity: 1;
-  z-index: 1;
-  transform: translateY(0);
-  transition-delay: 0s,0s,0.3s;
+#searchButton {
+  width: 90px;
+  height: 35px;
+  font-size: 15px;
 }
 
-h2 {
-  font-size: 1.5rem;
-  color: #eb6440;
-  text-align: center;
-}
-
-.main-container {
+body {
   background: url(/images/films.jpg) no-repeat center center fixed;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.moviePage {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.actorPage {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
 }
 
 
-/* .arrow {
-  height: 100%;
-  width: 22px;
-  line-height: 70px;
-  text-align: center;
-  display: inline-block;
-  color: #fff;
-  transition: 0.5s ease;
-}
-
-.sub-menu {
-  position: absolute;
-  top: 70px;
-  left: 0;
-  line-height: 40px;
-  transform: translateY(-3em);
-  background: #0d1d36;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 4px 4px;
-  z-index: -1;
-  visibility: hidden;
-  transition: all 0.5s ease 0s, visibility 0s linear 0s, z-index 0s linear 0.01s;
-}
-
-.htmlCss-sub-menu {
-  visibility: visible;
-  opacity: 1;
-  z-index: 1;
-  transform: translateY(0);
-  transition-delay: 0s, 0s, 0.3s;
-} */
-
-#search-input {
-  width: 200px;
-}
-
-h6 {
-  color: #eb6440;
-  text-align: center;
-}
-
-.footer{
-	background-color: #24262b;
-    padding: 20px 0;
-	margin-top: auto;
-	bottom: 0;
-}
-.footer-col{
-   width: 25%;
-   padding: 0 15px;
-}
-.footer-col h4{
-	font-size: 18px;
-	color: #ff7519;
-	text-transform: capitalize;
-	margin-bottom: 35px;
-	font-weight: 500;
-	position: relative;
-}
-.footer-col h4::before{
-	content: '';
-	position: absolute;
-	left:0;
-	bottom: -7px;
-	background-color: white;
-	height: 2px;
-	box-sizing: border-box;
-	width: 80px;
-}
-.footer-col ul li:not(:last-child){
-	margin-bottom: 10px;
-}
-.footer-col ul li a{
-	font-size: 16px;
-	text-transform: capitalize;
-	color: #ffffff;
-	text-decoration: none;
-	font-weight: 300;
-	color: #bbbbbb;
-	display: block;
-	transition: all 0.3s ease;
-}
-.footer-col ul li a:hover{
-	color: #ffffff;
-	padding-left: 8px;
-}
-.footer-col .social-links a{
-	display: inline-block;
-	height: 40px;
-	width: 40px;
-	background-color: rgba(255,255,255,0.2);
-	margin:0 10px 10px 0;
-	text-align: center;
-	line-height: 40px;
-	border-radius: 50%;
-	color: #ffffff;
-	transition: all 0.5s ease;
-}
-.footer-col .social-links a:hover{
-	color: #24262b;
-	background-color: #ffffff;
-}
-.copyright{
-    background-color: #24262b;
-    color: #bbbbbb;
-}
-
+/* Body - Movies Cards */
 .hover-content {
   opacity: 0;
   color: black;
@@ -228,8 +57,103 @@ h6 {
 .card:hover .hover-content {
   opacity: 1;
   height: auto;
+  transition: visibility 0s, opacity 0.5s linear;
 }
 
 .card {
   width: auto;
-} 
+}
+
+/* FOOTER */
+#footer-logo {
+  margin-left: 20px;
+  padding: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+h6 {
+  color: #eb6440;
+  text-align: center;
+}
+
+.footer {
+  background-color: #24262b;
+  padding: 20px 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.cont-name {
+  color: aliceblue;
+  font-size: 20px;
+}
+
+.footer-col {
+  width: 20%;
+  padding: 0 15px;
+}
+
+.footer-col h4 {
+  font-size: 13px;
+  color: #ffffff;
+  text-transform: capitalize;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+}
+
+.footer-col h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  background-color: white;
+  height: 2px;
+  box-sizing: border-box;
+  width: 110px;
+}
+
+.footer-col ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 300;
+  color: #bbbbbb;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+  color: #ffffff;
+  padding-left: 8px;
+}
+
+.footer-col .social-links a {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 0 10px 10px 0;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
+  color: #ffffff;
+  transition: all 0.5s ease;
+}
+
+.footer-col .social-links a:hover {
+  color: #24262b;
+  background-color: #ffffff;
+}
