@@ -25,13 +25,9 @@ const movieDetails = async (movie) => {
   const movieActors = await fetchOtherDetails(movie.id, "credits");
   const movieRelated = await fetchOtherDetails(movie.id, "similar");
   const movieTrailer = await fetchOtherDetails(movie.id, "videos");
-  // const movieRating = await fetchMovies();
   const movieRating = await fetchRatingById(movie);
 
-  // fetchRatingById(movie);
-
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer, movieRating);
-  // renderMovie(movieRes, otherMovieDetails);
 };
 
 //Navbar - fetch Genres:
@@ -78,41 +74,9 @@ const fetchActorsPage = async () => {
 };
 fetchActorsPage();
 
-// const renderActor = (actorID) => {
-//   const actors = document.querySelectorAll("a");
-//   for (let i = 0; i < actors.length; i++) {
-//     actors[i].addEventListener("click", (event) => {
-//       event.preventDefault();
-//       console.log("Clicked");
-//       // fetchActorByID(actorID, actors[i].id);
-//     });
-//   }
-// };
-
-// const renderActor = () => {
-//   // const actors = document.querySelectorAll("a");
-//   // console.log(actors);
-//   for (let i = 0; i < actors.length; i++) {
-//     actors[i].addEventListener("click", (event) => {
-//       event.preventDefault();
-//       console.log("Clicked");
-//       // fetchActorByID(actorID, actors[i].id);
-//     });
-//   }
-// };
-// renderActor();
-
-// const fetchActor = async (actor) => {
-//   const url = constructUrl(`person/${actor.id}`);
-//   const result = await fetch(url);
-//   const actorResults = await result.json();
-//   renderMovieActors(actorResults);
-// };
-
 const fetchActorByID = async (actor) => {
   const actors = await fetchActorBy(actor.id);
   if (actor.id == actors.id) {
-    console.log("tamam");
     CONTAINER.innerHTML = "";
     CONTAINER.className = "";
     CONTAINER.className = "container actorPage my-5 p-5";
@@ -137,23 +101,17 @@ const fetchActorByID = async (actor) => {
       </div>
 `;
     const actorOtherWorks = document.getElementById("actor-movie-list");
-    console.log(actorOtherWorks);
     actor.known_for.forEach((movies) => {
       const eachMovie = document.createElement("a");
       eachMovie.setAttribute("href", "#");
-      eachMovie.innerHTML = `<li>${movies.title}</li>`;
+      eachMovie.innerHTML = `<li> ${movies.title} </li>`;
       actorOtherWorks.appendChild(eachMovie);
-      console.log(eachMovie);
       eachMovie.addEventListener("click", () => {
         movieDetails(movies);
       });
     });
   }
 };
-
-function log() {
-  console.log("click");
-}
 
 // Navbar - Filter: now_playing - popular - top_rated - upcoming
 const dateInput = document.getElementById("example-date-input");
@@ -190,49 +148,52 @@ searchFilterButton.addEventListener("click", (event) => {
     }
   }
   if (filterRadioTypes[4].checked) {
-    console.log(dateInput.value);
     fetchReleaseDatesMovies(dateInput.value).then((data) => {
-      console.log(data);
       renderMovies(data.results);
     });
   }
 });
 
 // You'll need to play with this function in order to add features and enhance the style.
-const renderMovies = (movies) => {
- fetchGenresById().then((data)=>{
-  console.log(data);
- });
- 
+const renderMovies = async (movies) => {
+  const genres = await fetchGenresDetails();
 
   CONTAINER.innerHTML = "";
   CONTAINER.className = "";
   CONTAINER.className = "row mx-auto justify-content-center";
-  // CONTAINER.style = "margin:0;";
   movies.forEach((movie) => {
+    const genreName = document.createElement("div");
+    for (let i = 0; i < movie.genre_ids.length; i++)
+      for (let j = 0; j < genres.length; j++) {
+        if (movie.genre_ids[i] === genres[j].id) {
+          genreName.innerHTML += `${genres[j].name}. `;
+        }
+      }
     const movieDiv = document.createElement("div");
     movieDiv.className =
       "card col-10 col-sm-4 col-md-4 col-xl-3  px-2 pt-4 m-5";
     movieDiv.style.width = "20rem";
     movieDiv.innerHTML = `
-    <a class="movie-div" href="#">
-       
-    <h3 class="text-center text-success">${movie.title}</h3>
+    <div class="movie-div" href="#">
+    <a href="#"><h3 class="text-center text-success">${movie.title}</h3></a>
     <h5 class="text-center">${movie.release_date}</h5>
       <img class="card-img-top" src="${
         BACKDROP_BASE_URL + movie.backdrop_path
       }" class=" img-fluid p-2 mb-2 rounded" alt="Card image cap">
-      <p class="text-center">
-      <b>Genres:</b>
-      </p>
+      <div id="genres-name">
+      
+      
+      <b>Genres:  </b>${genreName.innerHTML}</div>
+      
+      
       <div class="hover-content">
     <b>OVERVIEW:</b> ${movie.overview}
     </div> 
-        <small class="text-muted">
+        <div class="text-muted card-footer"">
         <h4 class="text-center">Rating:&#x2606;</h4>
         <h4 class="text-center"> ${movie.vote_average}/10</h4>
-        </small>
-      </a>
+        </div>
+      </div>
     `;
     movieDiv.addEventListener("click", () => {
       movieDetails(movie);
@@ -259,7 +220,6 @@ const renderActors = (actors) => {
       </a>
     `;
     actorDiv.addEventListener("click", () => {
-      // fetchActor(actor);
       fetchActorByID(actor);
     });
     CONTAINER.appendChild(actorDiv);
@@ -274,11 +234,6 @@ const fetchSearch = async (query) => {
   const searchRes = await res.json();
   return searchRes;
 };
-
-// const searchDetails = async (query) => {
-//   const searchRes = await fetchSearch(query);
-//   return searchRes;
-// };
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -321,29 +276,12 @@ const fetchTrailer = async (movieId) => {
   return res.json();
 };
 
-// const naji = (genresid) => {
-//   // console.log(genresid);
-//   genresid.forEach((genreid) => {
-//     // console.log(genreid);
-//     return genreid;
-//   });
-// };
-
 const fetchRatingById = async (movie) => {
   const movies = await fetchMovie(movie.id);
   if (movie.id === movies.id) {
     return movie.vote_average;
   }
 };
-
-// const renderGender = (genderId) => {
-//   for (let i = 0; i < genderId.length; i++) {
-//     fetchGenreByID(genderId[i].name);
-//     // console.log(genderId[i])
-//   }
-// };
-
-// console.log(fetchGenreByID());
 
 const fetchGenresDetails = async () => {
   const url = constructUrl(`genre/movie/list`);
@@ -354,58 +292,39 @@ const fetchGenresDetails = async () => {
 
 const fetchGenresById = async () => {
   const genreName = document.createElement("p");
-  const movies = await fetchMovies();
-  const genres = await fetchGenresDetails();
-  // console.log(movies.results);
-  // console.log(genres);
+  const movies = await fetchMovies(); // /movie/now_playing , we get the ids of genres
+  const genres = await fetchGenresDetails(); ///genre/movie/list , we get the genres names using ids
   movies.results.map((movie) => {
-    for (let i = 0; i < movie.genre_ids.length; i++) 
-    for (let j=0; j< genres.length; j++) {
-      if (movie.genre_ids[i] === genres[j].id) {
-      // console.log(movie.genre_ids[i]);
-      // console.log(genres[j].id);
-      console.log(genres[j].name);
-        // console.log("tamam");
-        genreName.innerHTML += `<p>${genres[j].name}</p>`;
+    for (let i = 0; i < movie.genre_ids.length; i++)
+      for (let j = 0; j < genres.length; j++) {
+        if (movie.genre_ids[i] === genres[j].id) {
+          genreName.innerHTML += `<p>${genres[j].name}</p>`;
+        }
       }
-    }
   });
-  // console.log(container);
   return genreName;
 };
 
-// const renderMovieActors = (movieActors) => {
-//   // let container = "";
-//   const actorLists = document.createElement("li");
-//   movieActors.cast.slice(0, 5).forEach((actor) => {
-//     actorLists.innerHTML += `
-//     <a id="naji" href="#">${JSON.stringify(actor.name)}</a> as ${JSON.stringify(
-//       actor.character
-//     )}
-
-//       `;
-//     const actors = document.getElementById("naji");
-//     console.log(actors);
-//   });
-//   return actorLists;
-// };
+const renderMovieActors = (movieActors) => {
+  const actorLists = document.createElement("div");
+  movieActors.cast.slice(0, 5).forEach((actor) => {
+    actorLists.innerHTML += `
+    <li id="actor">
+    <a href="#">${actor.name}</a> as ${actor.character}
+    </li>
+    `;
+  });
+  actorLists.addEventListener("click", () => {
+  });
+  return actorLists;
+};
 
 const renderMovieRelated = (movies) => {
-  // console.log(movies);
   let container = "";
   movies.results.slice(0, 5).map((similar) => {
     const similarMovies = document.createElement("a");
     similarMovies.setAttribute("href", "#");
     container += `<li id="similar-movies"> ${similar.original_title} </li>`;
-    // const relatedMovies = document.getElementById("similar-movies");
-    // console.log(relatedMovies);
-    // relatedMovies.addEventListener("click",()=>{
-    //   console.log("click");
-    // })
-    // relatedMovies.appendChild(similarMovies);
-    // similarMovies.addEventListener("click", () => {
-    //   movieDetails(movies);
-    // });
   });
   return container;
 };
@@ -450,7 +369,7 @@ const renderMovie = (
   movieTrailer,
   movieRating
 ) => {
-  // const actors = renderMovieActors(movieActors);
+  const actors = renderMovieActors(movieActors);
   const similar = renderMovieRelated(movieRelated);
   const trailer = renderMovieTrailer(movieTrailer);
   const productionComp = renderMovieComp(movieRes);
@@ -488,7 +407,7 @@ const renderMovie = (
             </ul>
         <h3>Actors:</h3>
         <ul id="actors" class="list-unstyled">
-       
+       ${actors.innerHTML}
         </ul>
         
         <div>
@@ -503,8 +422,6 @@ const renderMovie = (
         </div>
 </div>
     </div>`;
-  // renderActor(movieActors.id);
 };
-// fetchGenresById();
 
 document.addEventListener("DOMContentLoaded", autorun);

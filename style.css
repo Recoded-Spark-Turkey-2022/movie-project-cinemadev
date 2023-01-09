@@ -157,3 +157,7 @@ h6 {
   color: #24262b;
   background-color: #ffffff;
 }
+
+p {
+  margin: 0;
+}
