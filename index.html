@@ -17,112 +17,260 @@
     <title>Movie</title>
   </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light" id="navigation-bar">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-      <h2 class=""><i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV</h2>
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item" id="home-page-list-item">
-          <a class="nav-link home-btn" href="#" id="home-page">Home<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item" id="actors-page-list-item">
-          <a class="nav-link" href="#" id="actors-page">Actors<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item dropdown" id="genre-list-item">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGenre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Genres
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          </div>
-        </li>
-        <li class="nav-item dropdown" id="filter-list-item">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
-          </svg></a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" id="search-input" placeholder="" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" id="search-button" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <div class="container">
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <h6>
+        <i class="fa-solid fa-ticket fa-xl" id="logo">CINEMADEV</i>
+      </h6>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  </div>
-  <footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="footer-col">
-              <h2 class=""><i class="fa-solid fa-ticket fa-xl" id="our-icon"></i> CINEMADEV</h2>
-                <ul>
-                    <li><a href="#">about us</a></li>
-                    <li><a href="#">our team</a></li>
-                    <li><a href="#">privacy policy</a></li>
-  
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>get help</h4>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">contact us</a></li>
-                    <li><a href="#">request movie/a></li>
-                    <li><a href="#">payment options</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Our team</h4>
-                <ul>
-                    <li><a href="#">Furkan Akkaya</a></li>
-                    <li><a href="#">Omer Amro Alestvani</a></li>
-                    <li><a href="#">Pelin karakoca</a></li>
-                    <li><a href="#">Naji Alhousami</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Naji Alhusami</h4>
-                <div class="social-links">
-                    <a href="https://github.com/naji-alhusami"><i class="fab fa-github"></i></a> 
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <div class="collapse navbar-collapse bg-light" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto" id="navbar-content">
+          <li class="nav-item active px-sm-3">
+            <a class="nav-link" href="index.html"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <!--  Movie dropdown-->
+          <li class="nav-item dropdown px-sm-3">
+            <a
+              class="text-dark nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Genres
+            </a>
+            <div
+              class="dropdown-menu"
+              id="movie-dropdown"
+              aria-labelledby="navbarDropdown"
+            ></div>
+          </li>
+
+          <!--Beginning of Find Movies-->
+          <li class="nav-item dropdown px-sm-3" id="filterNav">
+            <a
+              class="text-dark nav-link dropdown-toggle find"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              Filter
+            </a>
+            <div
+              id="dropdownMenu"
+              class="dropdown-menu"
+              aria-labelledby="navbarDropdown"
+            >
+              <form>
+                <div class="form-group">
+                  <div class="form-check ml-4 mt-2">
+                    <input
+                      class="form-check-input path"
+                      type="radio"
+                      name="exampleRadios2"
+                      id="now_playing"
+                      value="now_playing"
+                      checked
+                    />
+                    <label class="form-check-label" for="now_playing">
+                      Now Playing
+                    </label>
+                  </div>
+                  <div class="form-check ml-4 mt-2">
+                    <input
+                      class="form-check-input path"
+                      type="radio"
+                      name="exampleRadios2"
+                      id="popular"
+                      value="popular"
+                    />
+                    <label class="form-check-label" for="popular">
+                      Popular
+                    </label>
+                  </div>
+                  <div class="form-check ml-4 mt-2">
+                    <input
+                      class="form-check-input path"
+                      type="radio"
+                      name="exampleRadios2"
+                      id="top_rated"
+                      value="top_rated"
+                    />
+                    <label class="form-check-label" for="top_rated">
+                      Top Rated
+                    </label>
+                  </div>
+
+                  <div class="form-check ml-4 mt-2">
+                    <input
+                      class="form-check-input path"
+                      type="radio"
+                      name="exampleRadios2"
+                      id="upcoming"
+                      value="upcoming"
+                    />
+                    <label class="form-check-label" for="upcoming">
+                      Upcoming
+                    </label>
+                  </div>
+                  <div class="form-check ml-4 mt-2">
+                    <input
+                      class="form-check-input path"
+                      type="radio"
+                      name="exampleRadios2"
+                      id="releaseDate"
+                    />
+
+                    <label class="form-check-label" for="releaseDate">
+                      <label
+                        for="example-date-input"
+                        class="col-12 col-form-label p-0"
+                        >Release Date</label
+                      >
+
+                      <input
+                        class="form-control col-12"
+                        style="transform: scale(0.85)"
+                        type="date"
+                        value="2020-08-19"
+                        id="example-date-input"
+                      />
+                    </label>
+                  </div>
+                  <hr />
+                  <button
+                    type="submit"
+                    class="btn btn-primary ml-4 mt-2"
+                    data-toggle="collapse"
+                    data-target="#dropdownMenu"
+                    id="filterSearch"
+                  >
+                    Search
+                  </button>
                 </div>
-                <h4>Omer Alestvani</h4>
-                <div class="social-links">
-                  <a href="https://github.com/Omer-Amr"><i class="fab fa-github"></i></a> 
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-instagram"></i></a>
-                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
-              </div>
-              <h4>Pelin karakoca</h4>
-                <div class="social-links">
-                  <a href="https://github.com/pelinkarakoca"><i class="fab fa-github"></i></a> 
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-instagram"></i></a>
-                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
-              </div>
-              <h4>Furkan Akkaya</h4>
-                <div class="social-links">
-                  <a href="https://github.com/furkanakkayaa"><i class="fab fa-github"></i></a> 
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-instagram"></i></a>
-                  <a href="#"><i class="fab fa-linkedin-in"></i></a>
-              </div>
+              </form>
             </div>
-        </div>
-    </div>
-  </footer>
-  <footer class="copyright">&copy; Copyright 2022 Cinemadev</footer>
-  <script type="text/javascript" src="script.js"></script>
-</body>
+          </li>
+          <!-- Ending of Find Movies -->
+          <!-- Actors/Actresses -->
+          <li class="nav-item active px-sm-3">
+            <a class="nav-link" id="popularStars" href="index.html"
+              >Actors<span class="sr-only">(current)</span></a
+            >
+          </li>
+          <!--End of Actors-->
+          <!--About-->
+          <li class="nav-item active px-sm-3">
+            <a class="nav-link" id="about" href="#"
+              >About <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <!--End of About-->
+        </ul>
+        <!--Search-->
+        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2"
+            id="searchBox"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button
+            class="btn btn-outline-success my-2 my-sm-0"
+            id="searchButton"
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+    </nav>
 
+    <div class="container"></div>
+
+    <footer class="footer py-3 align-items-bottom">
+      <div class="row">
+        <div class="footer-col">
+          <h6>
+            <i class="fa-solid fa-ticket fa-xl" id="footer-logo">CINEMADEV</i>
+          </h6>
+        </div>
+        <div class="footer-col">
+          <h4 class="cont-name">NAJI ALHUSAMI</h4>
+          <div class="social-links">
+            <a href="https://github.com/naji-alhusami" target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+            <a
+              href="https://www.linkedin.com/in/naji-alhusami-b629b01a4/"
+              target="_blank"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="cont-name">PELIN KARAKOCA</h4>
+          <div class="social-links">
+            <a href="https://github.com/pelinkarakoca" target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="cont-name">OMER ALESTVANI</h4>
+          <div class="social-links">
+            <a href="https://github.com/Omer-Amr" target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="cont-name">FURKAN AKKAYA</h4>
+          <div class="social-links">
+            <a href="https://github.com/furkanakkayaa" target="_blank"
+              ><i class="fab fa-github"></i
+            ></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
 </html>
