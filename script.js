@@ -20,7 +20,7 @@ const constructUrl = (path) => {
 };
 
 // You may need to add to this function, definitely don't delete it.
-const movieDetails = async (movie) => {
+const movieDetails = async (movie, path) => {
   const movieRes = await fetchMovie(movie.id);
   const movieActors = await fetchOtherDetails(movie.id, "credits");
   const movieRelated = await fetchOtherDetails(movie.id, "similar");
@@ -30,7 +30,7 @@ const movieDetails = async (movie) => {
   renderMovie(movieRes, movieActors, movieRelated, movieTrailer, movieRating);
 };
 
-//Navbar - fetch Genres:
+// --> Navbar - fetch Genres:
 const fetchGenres = async () => {
   const url = constructUrl(`genre/movie/list`);
   const result = await fetch(url);
@@ -54,8 +54,9 @@ const fetchGenres = async () => {
   }
 };
 fetchGenres();
+//--> finish render Genres in Navbar.
 
-//Navbar - fetch all Actors:
+//--> Navbar - fetch all Actors:
 const fetchActorBy = async (path) => {
   const url = constructUrl(`person/${path}`);
   const res = await fetch(url);
@@ -73,47 +74,25 @@ const fetchActorsPage = async () => {
   });
 };
 fetchActorsPage();
+// --> finish render Actors in Navbar.
 
-const fetchActorByID = async (actor) => {
-  const actors = await fetchActorBy(actor.id);
-  if (actor.id == actors.id) {
+//Navbar - start About:
+const about = () => {
+  const aboutPage = document.getElementById("about");
+  aboutPage.addEventListener("click", () => {
     CONTAINER.innerHTML = "";
     CONTAINER.className = "";
-    CONTAINER.className = "container actorPage my-5 p-5";
+    CONTAINER.className = "container moviePage my-5 p-5";
     CONTAINER.innerHTML = `
-      <div class="row">
-      <div class="col-md-4">
-      <h1>${actor.name}</h1>
-      <img class="img-fluid" src="${BACKDROP_BASE_URL + actor.profile_path}" />
-      <p><b>Gender:</b>${actor.gender === 2 ? "Male" : "Female"}</p>
-      <p><b>Birthdate:</b>${actors.birthday}</p>
-      <p><b>Deathdate:</b>${actors.deathday ? actors.deathday : "Unknown"}</p>
-      <p><b>Popularity:</b>${
-        actors.popularity ? actors.popularity : "Unknown"
-      }</p>
-      </div>
-      <div class="col-md-8 mt-5">
-      <h3>Biograpyh:</h3><p>${
-        actors.biography ? actors.biography : "Unknown"
-      }</p>
-      <h3>${actor.name}'s Other Works:</h3><ul id="actor-movie-list"></ul>
-      </div>
-      </div>
-`;
-    const actorOtherWorks = document.getElementById("actor-movie-list");
-    actor.known_for.forEach((movies) => {
-      const eachMovie = document.createElement("a");
-      eachMovie.setAttribute("href", "#");
-      eachMovie.innerHTML = `<li> ${movies.title} </li>`;
-      actorOtherWorks.appendChild(eachMovie);
-      eachMovie.addEventListener("click", () => {
-        movieDetails(movies);
-      });
-    });
-  }
+    <h1> About: </h1>
+    <p>This is a movie database project, where it shows movies, their casts, ratings, trailers, related movies, genres, and so on.</p>
+    `;
+  });
 };
+about();
+//Finish About.
 
-// Navbar - Filter: now_playing - popular - top_rated - upcoming
+//--> start Filter in Navbar: now_playing - popular - top_rated - upcoming
 const dateInput = document.getElementById("example-date-input");
 const releaseDateRadio = document.getElementById("releaseDate");
 const filterRadioTypes = document.querySelectorAll("input[type=radio]");
@@ -153,55 +132,195 @@ searchFilterButton.addEventListener("click", (event) => {
     });
   }
 });
+//--> Finish Filter in Navbar: now_playing - popular - top_rated - upcoming
 
-// You'll need to play with this function in order to add features and enhance the style.
-const renderMovies = async (movies) => {
-  const genres = await fetchGenresDetails();
+// --> Start Search for movies in Navbar:
+const fetchSearch = async (query) => {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${atob(
+    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
+  )}&query=${query}`;
+  const res = await fetch(url);
+  const searchRes = await res.json();
+  return searchRes;
+};
 
-  CONTAINER.innerHTML = "";
-  CONTAINER.className = "";
-  CONTAINER.className = "row mx-auto justify-content-center";
-  movies.forEach((movie) => {
-    const genreName = document.createElement("div");
-    for (let i = 0; i < movie.genre_ids.length; i++)
-      for (let j = 0; j < genres.length; j++) {
-        if (movie.genre_ids[i] === genres[j].id) {
-          genreName.innerHTML += `${genres[j].name}. `;
-        }
-      }
-    const movieDiv = document.createElement("div");
-    movieDiv.className =
-      "card col-10 col-sm-4 col-md-4 col-xl-3  px-2 pt-4 m-5";
-    movieDiv.style.width = "20rem";
-    movieDiv.innerHTML = `
-    <div class="movie-div" href="#">
-    <a href="#"><h3 class="text-center text-success">${movie.title}</h3></a>
-    <h5 class="text-center">${movie.release_date}</h5>
-      <img class="card-img-top" src="${
-        BACKDROP_BASE_URL + movie.backdrop_path
-      }" class=" img-fluid p-2 mb-2 rounded" alt="Card image cap">
-      <div id="genres-name">
-      
-      
-      <b>Genres:  </b>${genreName.innerHTML}</div>
-      
-      
-      <div class="hover-content">
-    <b>OVERVIEW:</b> ${movie.overview}
-    </div> 
-        <div class="text-muted card-footer"">
-        <h4 class="text-center">Rating:&#x2606;</h4>
-        <h4 class="text-center"> ${movie.vote_average}/10</h4>
-        </div>
-      </div>
-    `;
-    movieDiv.addEventListener("click", () => {
-      movieDetails(movie);
-    });
-    CONTAINER.appendChild(movieDiv);
+const searchInput = document.getElementById("searchBox");
+const searchButton = document.getElementById("searchButton");
+
+const searchResults = () => {
+  fetchSearch(searchInput.value).then((data) => {
+    renderMovies(data.results);
   });
 };
 
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  searchResults();
+  searchInput.value = "";
+});
+// --> Finish Search for movies in Navbar:
+
+// Fetch all the now Playing Movies in the main page:
+const fetchMovies = async () => {
+  const url = constructUrl(`movie/now_playing`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+// Fetch all the Movies by Id in the each Movie page:
+const fetchMovie = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+// Fetch Movies for (credits - similar - videos):
+const fetchOtherDetails = async (movieId, details) => {
+  const url = constructUrl(`movie/${movieId}/${details}`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+// Fetch Trailer Movies:
+const fetchTrailer = async (movieId) => {
+  const url = constructUrl(`movie/${movieId}/videos`);
+  const res = await fetch(url);
+  return res.json();
+};
+
+// Fetch Movies Rating:
+const fetchRatingById = async (movie) => {
+  const movies = await fetchMovie(movie.id);
+  if (movie.id === movies.id) {
+    return movie.vote_average;
+  }
+};
+
+// Fetch Genres Details:
+const fetchGenresDetails = async () => {
+  const url = constructUrl(`genre/movie/list`);
+  const result = await fetch(url);
+  const genresResults = await result.json();
+  return genresResults.genres;
+};
+
+// Fetch Genres of each Movie by connecting ID's in two paths:
+const fetchGenresById = async () => {
+  const genreName = document.createElement("p");
+  const movies = await fetchMovies(); // /movie/now_playing , we get the ids of genres
+  const genres = await fetchGenresDetails(); ///genre/movie/list , we get the genres names using ids
+  movies.results.map((movie) => {
+    for (let i = 0; i < movie.genre_ids.length; i++)
+      for (let j = 0; j < genres.length; j++) {
+        if (movie.genre_ids[i] === genres[j].id) {
+          genreName.innerHTML += `<p>${genres[j].name}</p>`;
+        }
+      }
+  });
+  return genreName;
+};
+
+// Render Actors for each Movie:
+const renderMovieActors = (movieActors) => {
+  const actorLists = document.createElement("div");
+  movieActors.cast.slice(0, 5).forEach((actor) => {
+    actorLists.innerHTML += `
+    <li class="actor">
+    <a href="#">${actor.name}</a> as ${actor.character}
+    </li>
+    `;
+  });
+  return actorLists;
+};
+
+// Render Realted Movies for each Movie:
+const renderMovieRelated = (movies) => {
+  let container = "";
+  movies.results.slice(0, 5).map((similar) => {
+    const similarMovies = document.createElement("a");
+    similarMovies.setAttribute("href", "#");
+    container += `<li id="similar-movies"> ${similar.original_title} </li>`;
+  });
+  return container;
+};
+
+// Render Trailer for each Movie:
+const renderMovieTrailer = (movies) => {
+  let container = "";
+  movies.results.map((trailer) => {
+    container = `<iframe width="420" height="315"
+    src="https://www.youtube.com/embed/${trailer.key}">
+    </iframe>`;
+  });
+  return container;
+};
+
+// Render Production Companies for each Movie:
+const renderMovieComp = (movies) => {
+  let container = "";
+  movies.production_companies.map((company) => {
+    container += `<h5>${
+      company.name
+    }</h5> <img id="movie-backdrop" class="img-fluid" src="${
+      BACKDROP_BASE_URL + company.logo_path
+    }">`;
+  });
+  return container;
+};
+
+// Render Movie Director for each Movie:
+const renderMovieDirector = (movies) => {
+  let container = "";
+  movies.crew.map((director) => {
+    if (director.job === "Director") {
+      container = `<p>${director.name}</p>`;
+    }
+  });
+  return container;
+};
+
+// --> render one Actor:
+const fetchActorByID = async (actor) => {
+  const actors = await fetchActorBy(actor.id);
+  if (actor.id == actors.id) {
+    CONTAINER.innerHTML = "";
+    CONTAINER.className = "";
+    CONTAINER.className = "container actorPage my-5 p-5";
+    CONTAINER.innerHTML = `
+      <div class="row">
+      <div class="col-md-4">
+      <h1>${actor.name}</h1>
+      <img class="img-fluid" src="${BACKDROP_BASE_URL + actor.profile_path}" />
+      <p><b>Gender:</b>${actor.gender === 2 ? "Male" : "Female"}</p>
+      <p><b>Birthdate:</b>${actors.birthday}</p>
+      <p><b>Deathdate:</b>${actors.deathday ? actors.deathday : "Unknown"}</p>
+      <p><b>Popularity:</b>${
+        actors.popularity ? actors.popularity : "Unknown"
+      }</p>
+      </div>
+      <div class="col-md-8 mt-5">
+      <h3>Biograpyh:</h3><p>${
+        actors.biography ? actors.biography : "Unknown"
+      }</p>
+      <h3>${actor.name}'s Other Works:</h3><ul id="actor-movie-list"></ul>
+      </div>
+      </div>
+`;
+    const actorOtherWorks = document.getElementById("actor-movie-list");
+    actor.known_for.forEach((movies) => {
+      const eachMovie = document.createElement("a");
+      eachMovie.setAttribute("href", "#");
+      eachMovie.innerHTML = `<li> ${movies.title} </li>`;
+      actorOtherWorks.appendChild(eachMovie);
+      eachMovie.addEventListener("click", () => {
+        movieDetails(movies);
+      });
+    });
+  }
+};
+// --> finish render one Actor.
+
+// --> render all the Actors:
 const renderActors = (actors) => {
   CONTAINER.innerHTML = "";
   CONTAINER.className = "";
@@ -225,143 +344,9 @@ const renderActors = (actors) => {
     CONTAINER.appendChild(actorDiv);
   });
 };
+// ---> finish render all the Actors.
 
-const fetchSearch = async (query) => {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${atob(
-    "NTQyMDAzOTE4NzY5ZGY1MDA4M2ExM2M0MTViYmM2MDI="
-  )}&query=${query}`;
-  const res = await fetch(url);
-  const searchRes = await res.json();
-  return searchRes;
-};
-
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
-
-const searchResults = () => {
-  fetchSearch(searchInput.value).then((data) => {
-    renderMovies(data.results);
-  });
-};
-
-searchButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  searchResults();
-  searchInput.value = "";
-});
-
-// This function is to fetch movies. You may need to add it or change some part in it in order to apply some of the features.
-const fetchMovies = async () => {
-  const url = constructUrl(`movie/now_playing`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-// Don't touch this function please. This function is to fetch one movie.
-const fetchMovie = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchOtherDetails = async (movieId, details) => {
-  const url = constructUrl(`movie/${movieId}/${details}`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchTrailer = async (movieId) => {
-  const url = constructUrl(`movie/${movieId}/videos`);
-  const res = await fetch(url);
-  return res.json();
-};
-
-const fetchRatingById = async (movie) => {
-  const movies = await fetchMovie(movie.id);
-  if (movie.id === movies.id) {
-    return movie.vote_average;
-  }
-};
-
-const fetchGenresDetails = async () => {
-  const url = constructUrl(`genre/movie/list`);
-  const result = await fetch(url);
-  const genresResults = await result.json();
-  return genresResults.genres;
-};
-
-const fetchGenresById = async () => {
-  const genreName = document.createElement("p");
-  const movies = await fetchMovies(); // /movie/now_playing , we get the ids of genres
-  const genres = await fetchGenresDetails(); ///genre/movie/list , we get the genres names using ids
-  movies.results.map((movie) => {
-    for (let i = 0; i < movie.genre_ids.length; i++)
-      for (let j = 0; j < genres.length; j++) {
-        if (movie.genre_ids[i] === genres[j].id) {
-          genreName.innerHTML += `<p>${genres[j].name}</p>`;
-        }
-      }
-  });
-  return genreName;
-};
-
-const renderMovieActors = (movieActors) => {
-  const actorLists = document.createElement("div");
-  movieActors.cast.slice(0, 5).forEach((actor) => {
-    actorLists.innerHTML += `
-    <li id="actor">
-    <a href="#">${actor.name}</a> as ${actor.character}
-    </li>
-    `;
-  });
-  actorLists.addEventListener("click", () => {
-  });
-  return actorLists;
-};
-
-const renderMovieRelated = (movies) => {
-  let container = "";
-  movies.results.slice(0, 5).map((similar) => {
-    const similarMovies = document.createElement("a");
-    similarMovies.setAttribute("href", "#");
-    container += `<li id="similar-movies"> ${similar.original_title} </li>`;
-  });
-  return container;
-};
-
-const renderMovieTrailer = (movies) => {
-  let container = "";
-  movies.results.map((trailer) => {
-    container = `<iframe width="420" height="315"
-    src="https://www.youtube.com/embed/${trailer.key}">
-    </iframe>`;
-  });
-  return container;
-};
-
-const renderMovieComp = (movies) => {
-  let container = "";
-  movies.production_companies.map((company) => {
-    container += `<h5>${
-      company.name
-    }</h5> <img id="movie-backdrop" class="img-fluid" src="${
-      BACKDROP_BASE_URL + company.logo_path
-    }">`;
-  });
-  return container;
-};
-
-const renderMovieDirector = (movies) => {
-  let container = "";
-  movies.crew.map((director) => {
-    if (director.job === "Director") {
-      container = `<p>${director.name}</p>`;
-    }
-  });
-  return container;
-};
-
-// You'll need to play with this function in order to add features and enhance the style.
+// ---> render each Movie after clickin one of the movies:
 const renderMovie = (
   movieRes,
   movieActors,
@@ -422,6 +407,70 @@ const renderMovie = (
         </div>
 </div>
     </div>`;
+  const renderActorInEachMovie = document.getElementsByClassName("actor");
+  for (let i = 0; i < renderActorInEachMovie.length; i++) {
+    renderActorInEachMovie[i].addEventListener("click", () => {
+      fetchActorBy("popular").then((actorResults) => {
+        fetchActorByID(actorResults.results[i]);
+      });
+    });
+  }
 };
+// --> finish render one Movie.
+
+// --> render all movies in the main page:
+const renderMovies = async (movies) => {
+  CONTAINER.innerHTML = "";
+  CONTAINER.className = "";
+  CONTAINER.className = "row mx-auto justify-content-center";
+  const genres = await fetchGenresDetails();
+  movies.forEach((movie) => {
+    const genreName = document.createElement("div");
+    for (let i = 0; i < movie.genre_ids.length; i++)
+      for (let j = 0; j < genres.length; j++) {
+        if (movie.genre_ids[i] === genres[j].id) {
+          genreName.innerHTML += `${genres[j].name}. `;
+        }
+      }
+    const ratingDiv = document.createElement("div");
+    if (movie.vote_average > 8) {
+      ratingDiv.innerHTML = `<p class="text-center text-success">Rating:&#x2606; ${movie.vote_average}/10</p>`;
+    } else if (movie.vote_average > 6 && movie.vote_average < 7.9) {
+      ratingDiv.innerHTML = `<p class="text-center text-primary"> Rating:&#x2606;${movie.vote_average}/10</p>`;
+    } else if (movie.vote_average > 4 && movie.vote_average < 5.9) {
+      ratingDiv.innerHTML = `<p class="text-center text-warning"> Rating:&#x2606;${movie.vote_average}/10</p>`;
+    } else if (movie.vote_average < 3) {
+      ratingDiv.innerHTML = `<p class="text-center text-danger">Rating:&#x2606; ${movie.vote_average}/10</p>`;
+    }
+
+    const movieDiv = document.createElement("div");
+    movieDiv.className =
+      "card col-10 col-sm-4 col-md-4 col-xl-3  px-2 pt-4 m-5";
+    movieDiv.style.width = "20rem";
+    movieDiv.innerHTML = `
+    <div class="movie-div" href="#">
+    <a href="#"><h3 class="text-center text-success">${movie.title}</h3></a>
+    <h5 class="text-center">${movie.release_date}</h5>
+      <img class="card-img-top" src="${
+        BACKDROP_BASE_URL + movie.backdrop_path
+      }" class=" img-fluid p-2 mb-2 rounded" alt="Card image cap">
+      <div id="genres-name">
+      <b>Genres:  </b>${genreName.innerHTML}</div>
+      <div class="hover-content">
+    <b>OVERVIEW:</b> ${movie.overview}
+    </div> 
+        <div class="text-muted card-footer"">
+        <h4 class="text-center">${ratingDiv.innerHTML}</h4>
+        
+        </div>
+      </div>
+    `;
+    movieDiv.addEventListener("click", () => {
+      movieDetails(movie);
+    });
+    CONTAINER.appendChild(movieDiv);
+  });
+};
+//  ---> finish render all the movies in the first page.
 
 document.addEventListener("DOMContentLoaded", autorun);
